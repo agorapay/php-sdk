@@ -1,0 +1,19 @@
+{
+  "name": "SDK CAPS PAYMENT API",
+  "description": "PHP SDK for CAPSPAYMENT API",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.3",
+    "ext-curl": "*",
+    "ext-openssl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "CAPSPaymentApi\\": "CAPSPaymentApi/"
+    }
+  },
+  "require-dev": {
+    "nunomaduro/phpinsights": "^1.14"
+  }
+}
