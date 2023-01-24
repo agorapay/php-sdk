@@ -41,8 +41,33 @@ class ApiPaymentAccounts extends Librairies\ApiBase
     public function setIBAN($setIbanPaymentAccountOptions)
     {
         try {
-            $endPoint = "/paymentAccount/setIBAN";
-            return $this->filterObject($endPoint, $setIbanPaymentAccountOptions, 'POST', true);
+          $endPoint = "/paymentAccount/setIBAN";
+					$setIbanBody = array(
+						'accountNumber' => $setIbanPaymentAccountOptions->accountNumber,
+						'firstName' => $setIbanPaymentAccountOptions->firstName,
+						'lastName' => $setIbanPaymentAccountOptions->lastName,
+						'socialReason' => $setIbanPaymentAccountOptions->socialReason,
+						'address' => $setIbanPaymentAccountOptions->address,
+						'city' => $setIbanPaymentAccountOptions->city,
+						'postalCode' => $setIbanPaymentAccountOptions->postalCode,
+						'country' => $setIbanPaymentAccountOptions->country,
+						'iban' => $setIbanPaymentAccountOptions->iban,
+						'currency' => $setIbanPaymentAccountOptions->currency,
+						'paymentMethodAlias' => $setIbanPaymentAccountOptions->paymentMethodAlias,
+						'activationDate' => $setIbanPaymentAccountOptions->activationDate,
+						'fileType' => $setIbanPaymentAccountOptions->fileType,
+					);
+					if ($setIbanPaymentAccountOptions->filePath !== "") {
+						return $this->filterObject($endPoint, $setIbanBody, 'POST', array(
+							'file' => array(
+								'fileName' => $setIbanPaymentAccountOptions->fileName,
+								'fileType' => $setIbanPaymentAccountOptions->fileMime,
+								'filePath' => $setIbanPaymentAccountOptions->filePath,
+							)
+						));
+					} else {
+						return $this->filterObject($endPoint, $setIbanBody, 'POST');
+					}
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);
         }
@@ -84,7 +109,7 @@ class ApiPaymentAccounts extends Librairies\ApiBase
 
     /**
      * Call api /paymentAccount
-     * 
+     *
      * Get account details
      *
      * @param object $paymentAccountOptions Instance of class \CAPSPaymentApi\PaymentAccountOptions
@@ -131,6 +156,25 @@ class ApiPaymentAccounts extends Librairies\ApiBase
         try {
             $endPoint = "/paymentAccount/disableIBAN";
             return $this->filterObject($endPoint, $disableIbanPaymentAccountOptions);
+        } catch (\Exception $exception) {
+            return $this->getMsgException($exception);
+        }
+    }
+
+    /**
+     * Call api /paymentAccount/report
+     *
+     *
+     * @param object $reportPaymentAccountOptions Instance of class \CAPSPaymentApi\ReportPaymentAccountOptions
+     * @return object Response data
+     */
+    public function report($reportPaymentAccountOptions)
+    {
+        try {
+            $endPoint = "/paymentAccount/report";
+            $report = $this->filterObject($endPoint, $reportPaymentAccountOptions, "GET");
+            $urlParameters = http_build_query($report);
+            return $this->callApi($endPoint, $urlParameters, "GET");
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);
         }

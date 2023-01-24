@@ -21,3 +21,4 @@ Vous utilisez les SDKs à vos propres risques. Crédit Agricole Payment Services
 En aucun cas, Crédit Agricole Payment Services ne sera responsable de tout dommage, réclamation ou autre responsabilité, que ce soit dans le cadre d’un contrat, d’un délit ou autre, en provenance de, consécutif à ou en relation avec les SDKs ou leur utilisation, ou avec d’autres éléments des SDKs.
 
 Les utilisateurs ont la responsabilité de tester le sdk avant d’entamer la productivité. En utilisant le(s) SDKs sur votre plateforme, vous acceptez les présentes conditions d’utilisation. Ne pas utiliser le(s) SDKs si vous n’acceptez pas les présentes conditions d’utilisation. 
+

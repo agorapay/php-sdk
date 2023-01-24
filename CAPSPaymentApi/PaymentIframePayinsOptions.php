@@ -59,9 +59,9 @@ class PaymentIframePayinsOptions
 
     /**
      * List of breakdown for this payment
-     * @var array $breakDownList contains instances of class \CAPSPaymentApi\BreakDown()
+     * @var array $breakdownList contains instances of class \CAPSPaymentApi\BreakDown()
      */
-    public $breakDownList;
+    public $breakdownList;
 
     /**
      * Payer.
@@ -82,7 +82,7 @@ class PaymentIframePayinsOptions
     public $recurrent;
 
     /**
-     * Identifier of tjhe payment method
+     * Identifier of the payment method
      * @var string $paymentMethodId Identifier of the payment method
      */
     public $paymentMethodId;
@@ -92,6 +92,24 @@ class PaymentIframePayinsOptions
      * @var string $cbChallenge
      */
     public $cbChallenge;
+
+    /**
+     * details. Instance of class \CAPSPaymentApi\Details()
+     * @var object $details Payment details information For some payment methods, additional details are needed.
+     */
+    public $details;
+
+    /**
+     * page: [ full, page ]
+     * @var string $page
+     */
+    public $page;
+
+    /**
+     * paymentOptions: [ cardOnFile, withoutCardOnFile ]
+     * @var string $paymentOptions Payment options
+     */
+    public $paymentOptions;
 
     /**
      * Constructor
@@ -104,11 +122,14 @@ class PaymentIframePayinsOptions
      * @param string $capture
      * @param string $urlRedirect
      * @param string $endToEndId
-     * @param array  $breakDownList
+     * @param array  $breakdownList
      * @param object $cart
      * @param string $recurrent
      * @param string $paymentMethodId
      * @param string $cbChallenge
+     * @param object $details
+     * @param string $page
+     * @param string $paymentOptions
      */
     public function __construct(
         $orderReference,
@@ -120,25 +141,31 @@ class PaymentIframePayinsOptions
         $capture = "",
         $urlRedirect = "",
         $endToEndId = "",
-        $breakDownList = "",
+        $breakdownList = "",
         $cart = "",
         $recurrent = "",
         $paymentMethodId = "",
-        $cbChallenge = ""
+        $cbChallenge = "",
+        $details = "",
+        $page = "",
+        $paymentOptions = ""
     ) {
-        $this->paymentAccount = $paymentAccount;
-        $this->orderReference = $orderReference;
+        $this->paymentAccount   = $paymentAccount;
+        $this->orderReference   = $orderReference;
         $this->orderCountryCode = $orderCountryCode;
-        $this->metaData = $metaData;
-        $this->capture = $capture;
-        $this->urlRedirect = $urlRedirect;
-        $this->endToEndId = $endToEndId;
-        $this->amount = $amount;
-        $this->breakDownList = $breakDownList;
-        $this->payer = $payer;
-        $this->cart = $cart;
-        $this->recurrent = $recurrent;
-        $this->paymentMethodId = $paymentMethodId;
-        $this->cbChallenge = $cbChallenge;
+        $this->metaData         = $metaData;
+        $this->capture          = $capture;
+        $this->urlRedirect      = $urlRedirect;
+        $this->endToEndId       = $endToEndId;
+        $this->amount           = $amount;
+        $this->breakdownList    = $breakdownList;
+        $this->payer            = $payer;
+        $this->cart             = $cart;
+        $this->recurrent        = $recurrent;
+        $this->paymentMethodId  = $paymentMethodId;
+        $this->cbChallenge      = $cbChallenge;
+        $this->details          = $details;
+        $this->page             = $page;
+        $this->paymentOptions   = $paymentOptions;
     }
 }

@@ -64,10 +64,22 @@ class SetIbanPaymentAccountOptions
     public $fileType;
 
     /**
-     * The content of the file contening the proof in base64 encoding format.
-     * @var string fileContent The content of the file contening the proof in base64 encoding format
+     * The path of the file contening the proof.
+     * @var string filePath The path of the file contening the proof
      */
-    public $fileContent;
+    public $filePath;
+
+    /**
+     * The name of the file contening the proof.
+     * @var string fileName The name of the file contening the proof 
+     */
+    public $fileName;
+
+	  /**
+     * The mime type of the file contening the proof.
+     * @var string fileName The mime type of the file contening the proof.
+     */
+    public $fileMime;
 
     /**
      * The new IBAN (required).
@@ -106,7 +118,9 @@ class SetIbanPaymentAccountOptions
      * @param string $firstName
      * @param string $lastName
      * @param string $socialReason
-     * @param string $fileContent
+     * @param string $filePath
+     * @param string $fileName
+     * @param string $fileMime
      * @param string $paymentMethodAlias
      * @param string $activationDate
      */
@@ -122,7 +136,9 @@ class SetIbanPaymentAccountOptions
         $firstName = "",
         $lastName = "",
         $socialReason = "",
-        $fileContent = "",
+        $filePath = "",
+        $fileName = "",
+        $fileMime = "",
         $paymentMethodAlias = "",
         $activationDate = ""
     ) {
@@ -135,7 +151,9 @@ class SetIbanPaymentAccountOptions
         $this->postalCode = $postalCode;
         $this->country = $country;
         $this->fileType = $fileType;
-        $this->fileContent = $fileContent;
+        $this->filePath = $filePath;
+        $this->fileName = $fileName;
+        $this->fileMime = $fileMime;
         $this->iban = $iban;
         $this->currency = $currency;
         $this->paymentMethodAlias = $paymentMethodAlias;

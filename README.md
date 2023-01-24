@@ -6,7 +6,7 @@ CAPSPAYMENT API SDK is a PHP client library to work with CAPSPAYMENT REST API.
 Requirements
 -------------------------------------------------
 To use this SDK, you will need (as a minimum):
-* PHP >= v5.3.3
+* PHP >= v7.2
 * cURL (included and enabled in a standard PHP distribution)
 
 This SDK provide an autoloader. You need to use it in your project :
@@ -78,19 +78,19 @@ List SDK functions to use for API Payin
 
 You will find in this table which function to used for each API "Payin" endpoint :
 
-| Payin Endpoint      | SDK Functions | Method |
-| ----------- | ----------- |----------- |
-| /payin/payment      | $api->Payin->payment($object)       | POST
-| /payin/paymentDetails   | $api-> Payin->paymentDetails($object)        | POST
-| /payin/paymentMethods   | $api-> Payin->paymentMethods($object)        | POST
-| /payin/capture   | $api-> Payin->capture($object)        | POST
-| /payin/cancel   | $api-> Payin->cancel($object)        | POST
-| /payin/orderDetails   | $api-> Payin->orderDetails($object)        | GET
-| /payin/adjustPayment   | $api-> Payin->adjustPayment($object)        | POST
-| /payin/paymentIframe   | $api-> Payin->paymentIframe($object)        | POST
-| /payin/refund   | $api-> Payin->refund($object)        | POST
-| /payin/mandate   | $api-> Payin->mandate($object)        | GET
-| /payin/ticket   | $api-> Payin->ticket($object)        | GET
+| Payin Endpoint          | SDK Functions                         | Method |
+| -----------             | -----------                           |----------- |
+| /payin/payment          | $api->Payin->payment($object)         | POST
+| /payin/paymentDetails   | $api->Payin->paymentDetails($object)  | POST
+| /payin/paymentMethods   | $api->Payin->paymentMethods($object)  | POST
+| /payin/capture          | $api->Payin->capture($object)         | POST
+| /payin/cancel           | $api->Payin->cancel($object)          | POST
+| /payin/orderDetails     | $api->Payin->orderDetails($object)    | GET
+| /payin/adjustPayment    | $api->Payin->adjustPayment($object)   | POST
+| /payin/paymentIframe    | $api->Payin->paymentIframe($object)   | POST
+| /payin/refund           | $api->Payin->refund($object)          | POST
+| /payin/mandate          | $api->Payin->mandate($object)         | GET
+| /payin/ticket           | $api->Payin->ticket($object)          | GET
 
 
 #### Examples
@@ -106,15 +106,66 @@ $api->Config->TokenUrl = 'your_url';
 $api->Config->TokenUser = 'your_username';
 $api->Config->TokenPassword = 'your_password';
 
-$paymentMethodObj = new \CAPSPaymentApi\PaymentPayinsOptions();
-$paymentMethodObj->orderId = "2987721";
-$paymentMethodObj->transactionAmount->value = "70.10";
-$paymentMethodObj->transactionAmount->currency = "EUR";
-$paymentMethodObj->urlRedirect = "http://www.url.fr";
-$paymentMethodObj->transPaymentMethod->id = "4";
+//transaction amount object creation
+$transactionAmountObj = new \CAPSPaymentApi\Amount('', '');
+//valuation of the object
+$transactionAmountObj->value = '70.10';
+$transactionAmountObj->currency = 'EUR';
+
+//transaction payment method object creation
+$transPaymentMethodObj = new \CAPSPaymentApi\TransPaymentMethod('');
+//valuation of the object
+$transPaymentMethodObj->id = '4';
+
+//payment object creation
+$paymentObj = new \CAPSPaymentApi\PaymentPayinsOptions('','');
+//valuation of the object
+$paymentObj->orderId = '2987721';
+$paymentObj->transactionAmount = $transactionAmountObj;
+$paymentObj->urlRedirect = 'http://www.url.fr';
+$paymentObj->transPaymentMethod = $transPaymentMethodObj;
 
 // call API with payin/payment
-$result = $api->Payin->payment($paymentMethodObj);
+$result = $api->PayIn->payment($paymentObj);
+?>
+```
+
+Here, we call API with payin/paymentMethods (Method POST)
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+//transaction amount object creation
+$amountObj = new \CAPSPaymentApi\Amount('', '');
+//valuation of the object
+$amountObj->value = '100';
+$amountObj->currency = 'EUR';
+
+//payer object creation
+$payerObj = new \CAPSPaymentApi\Payer("192.168.0.1", "testPayer", "", "FR");
+//valuation of the object
+$payerObj->IPAddress = '192.168.0.1';
+$payerObj->reference = 'testPayer';
+$payerObj->userAgent = '';
+$payerObj->language = 'FR';
+
+
+//payment methods object creation
+$paymentMethodsObj = new \CAPSPaymentApi\PaymentMethodPayinsOptions('', '', '', '');
+//valuation of the object
+$paymentMethodsObj->orderReference = 'OrderTestPayin';
+$paymentMethodsObj->orderCountryCode = 'FRA';
+$paymentMethodsObj->amount = $amountObj;
+$paymentMethodsObj->payer = $payerObj;
+
+// call API with payin/paymentMethods
+$result = $api->PayIn->paymentMethods($paymentMethodsObj);
 ?>
 ```
 
@@ -183,6 +234,7 @@ You will find in this table which function to used for each API "PaymentAccount"
 | /paymentAccount/payoutAuto   | $api->PaymentAccount->payoutAuto(payload)       | POST
 | /paymentAccount/credit   | $api->PaymentAccount->credit(payload)       | POST
 | /paymentAccount/disableIBAN   | $api->PaymentAccount->disableIBAN(payload)       | POST
+| /paymentAccount/report   | $api->PaymentAccount->report(payload)       | GET
 
 #### Examples
 
@@ -339,6 +391,36 @@ $api->Config->TokenPassword = 'your_password';
 // call API with /accountHolder/registrationDetails
 $registrationDetails = new \CAPSPaymentApi\RegistrationDetailsAccountHolderOptions('CAPS202201120YYEX1');
 $result = $api->AccountHolder->registrationDetails($registrationDetails);
+
+?>
+```
+List SDK functions to use for API Selfcare
+-------------------------------------------------
+
+You will find in this table which function to used for each API "Selfcare" endpoint :
+
+| Selfcare Endpoint      | SDK Functions | Method
+| ----------- | ----------- | ----------- |
+| /selfcare/init      | $api->Selfcare->init(payload)       | POST
+
+#### Example
+
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$initSelfcareOptions = new \CAPSPaymentApi\InitSelfcareOptions("Olivier", "GARIN", "olivier.garin@email.fr", "0123456789", "GARIN & Fils", "100.00", "FR");
+
+// call API with /selfcare/init
+$result = $api->Selfcare->init($initSelfcareOptions);
 
 ?>
 ```

@@ -11,15 +11,15 @@ abstract class ApiBase
      * @param object $obj
      * @return object stdClass
      */
-    public function filterObject($endPoint, $obj, $method = "POST", $withBase64 = false)
+    public function filterObject($endPoint, $obj, $method = "POST", $files = null)
     {
-        $jsonPayload = json_encode($obj);
+        $jsonPayload = json_encode($obj, JSON_UNESCAPED_SLASHES);
         $jsonPayload = $this->filterDatas($jsonPayload, function ($value) {
             return is_null($value) || $value === "";
         });
-        if($method == "POST") {
-             $jsonPayload = json_encode($jsonPayload);
-             return $this->callApi($endPoint, $jsonPayload, $method, $withBase64);
+        if ($method == "POST") {
+             $jsonPayload = json_encode($jsonPayload, JSON_UNESCAPED_SLASHES);
+             return $this->callApi($endPoint, $jsonPayload, $method, $files);
         }
         return $jsonPayload;
     }
@@ -32,7 +32,7 @@ abstract class ApiBase
      * @param string $method
      * @return object
      */
-    public function callApi($endPoint, $postFields, $method = "POST", $withBase64 = false)
+    public function callApi($endPoint, $postFields, $method = "POST", $files = null)
     {
         $url = trim($this->_root->Config->BaseUrl, "/") . $endPoint;
         try {
@@ -44,11 +44,11 @@ abstract class ApiBase
                 $postFields,
                 $this->tokenValue,
                 $method,
-                $withBase64
+                $files
             );
             if (!$response) {
                 throw new \Exception("Unable to connect to API.");
-            } 
+            }
             else {
                 return json_decode($response);
             }
@@ -66,7 +66,7 @@ abstract class ApiBase
      * @param string $method
      * @return string
      */
-    private function curlApi($url, $postFields, $token, $method = "POST", $withBase64 = false)
+    private function curlApi($url, $postFields, $token, $method = "POST", $files = null)
     {
         if (
             !isset($this->_root->Config->TokenValue) ||
@@ -75,74 +75,58 @@ abstract class ApiBase
             $this->mainAuthenticate();
         }
 
-        $curlHandler = curl_init();
-        $config = [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url,
-            CURLOPT_HEADER => 0,
-            CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer " . $this->_root->Config->TokenValue,
-                "Content-Type: application/json",
-                "Content-Length: " . strlen($postFields),
-                "id_token: " . $this->_root->Config->TokenId,
-            ],
-        ];
-
-        curl_setopt_array($curlHandler, $config);
-
-        if ($method === "POST") {
-            $this->jsonFieldToString($postFields);
-            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $postFields);
-            curl_setopt($curlHandler, CURLOPT_POST, 1);
-            curl_setopt($curlHandler, CURLOPT_HTTPHEADER, [
-                "Content-Length: " . strlen($postFields)
-            ]);
-
-            if($withBase64) {
-                curl_setopt($curlHandler, CURLOPT_HTTPHEADER, [
-                    "Content-Length: " . strlen($postFields),
-                    "Content-Transfer-Encoding: base64"
-                ]);
-            }
-        }
-
-        if ($method === "GET") {
-            curl_setopt($curlHandler, CURLOPT_URL, $url . "?" . $postFields);
-            curl_setopt($curlHandler, CURLOPT_HTTPHEADER, [
-                "Authorization: Bearer " . $this->_root->Config->TokenValue,
-                "id_token: " . $this->_root->Config->TokenId,
-            ]);
-        }
-
-        $response = curl_exec($curlHandler);
-
-        $status = curl_getinfo($curlHandler, CURLINFO_RESPONSE_CODE);
-        if ($status === 401) {
-            $this->mainAuthenticate();
-
+        $attempt = 0;
+        $again = 0;
+        do
+        {
+            $curlHandler = curl_init();
+            $config = [
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => $url,
+                CURLOPT_HEADER => 0,
+                CURLOPT_HTTPHEADER => [
+                    "Authorization: Bearer " . $this->_root->Config->TokenValue,
+                    "id_token: " . $this->_root->Config->TokenId,
+                ],
+            ];
             if ($method === "POST") {
-                $httpHeaderArray = [
-                    "Authorization: Bearer " . $this->_root->Config->TokenValue,
-                    "Content-Type: application/json",
-                    "Content-Length: " . strlen($postFields),
-                    "id_token: " . $this->_root->Config->TokenId,
-                ];
-                if($withBase64) {
-                    $httpHeaderArray = array_merge($httpHeaderArray, ["Content-Transfer-Encoding: base64"]);
+                $this->jsonFieldToString($postFields);
+                curl_setopt($curlHandler, CURLOPT_POST, 1);
+                if ($files !== null && is_array($files))
+                {
+                    $post = array();
+                    $post['json'] = $postFields;
+                    foreach ($files as $var => $content) {
+                        $post[$var] = new \CURLFile($content['filePath'], $content['fileType'], $content['fileName']);
+                    }
                 }
-                curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $httpHeaderArray);
+                else
+								{
+                    $post = $postFields;
+										array_push($config[CURLOPT_HTTPHEADER], "Content-Type: application/json");
+								}
+            		curl_setopt_array($curlHandler, $config);
+                curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $post);
             }
-
-            if ($method === "GET") {
+						else if ($method === "GET") {
+                curl_setopt($curlHandler, CURLOPT_URL, $url . "?" . $postFields);
                 curl_setopt($curlHandler, CURLOPT_HTTPHEADER, [
                     "Authorization: Bearer " . $this->_root->Config->TokenValue,
                     "id_token: " . $this->_root->Config->TokenId,
                 ]);
             }
-            $response = curl_exec($curlHandler);
-        }
 
-        curl_close($curlHandler);
+            $response = curl_exec($curlHandler);
+
+            $status = curl_getinfo($curlHandler, CURLINFO_RESPONSE_CODE);
+            if ($status === 401) {
+                if ($attempt++ == 0) $again = 1;
+                $this->mainAuthenticate();
+            } else {
+                $again = 0;
+            }
+            curl_close($curlHandler);
+        } while ($again);
         return $response;
     }
 
@@ -190,7 +174,6 @@ abstract class ApiBase
         if ($method === "POST") {
             curl_setopt($curlHandler, CURLOPT_POST, 1);
         }
-
         $response = curl_exec($curlHandler);
 
         curl_close($curlHandler);

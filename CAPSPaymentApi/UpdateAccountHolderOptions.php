@@ -33,22 +33,16 @@ class UpdateAccountHolderOptions
     public $country;
 
     /**
-     * registrationNumber. SIRET for France.
-     * @var string $registrationNumber SIRET for France
-     */
-    public $registrationNumber;
-
-    /**
      * masterAddress (required)
      * @var object $masterAddress contain instance of class \CAPSPaymentApi\RegisterAddress().
      */
     public $masterAddress;
 
     /**
-     * billingAddress
-     * @var object $billingAddress contain instance of class \CAPSPaymentApi\RegisterAddress().
+     * commercialAddress
+     * @var object $commercialAddress contain instance of class \CAPSPaymentApi\RegisterAddress().
      */
-    public $billingAddress;
+    public $commercialAddress;
 
     /**
      * Current or last year turnover in account currency code unit.
@@ -99,9 +93,8 @@ class UpdateAccountHolderOptions
      * @param string $socialReason
      * @param string $compagnyName
      * @param string $country
-     * @param string $registrationNumber
      * @param object $masterAddress
-     * @param object $billingAddress
+     * @param object $commercialAddress
      * @param string $turnover
      * @param string $regulatedSociety
      * @param object $physicalPersons
@@ -114,9 +107,8 @@ class UpdateAccountHolderOptions
         $socialReason = "",
         $compagnyName = "",
         $country = "",
-        $registrationNumber = "",
         $masterAddress = "",
-        $billingAddress = "",
+        $commercialAddress = "",
         $turnover = "",
         $regulatedSociety = "",
         $physicalPersons = "",
@@ -126,9 +118,8 @@ class UpdateAccountHolderOptions
         $this->socialReason = $socialReason;
         $this->compagnyName = $compagnyName;
         $this->country = $country;
-        $this->registrationNumber = $registrationNumber;
         $this->masterAddress = $masterAddress;
-        $this->billingAddress = $billingAddress;
+        $this->commercialAddress = $commercialAddress;
         $this->turnover = $turnover;
         $this->regulatedSociety = $regulatedSociety;
         $this->physicalPersons = $physicalPersons;

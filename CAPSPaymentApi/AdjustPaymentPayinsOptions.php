@@ -22,9 +22,9 @@ class AdjustPaymentPayinsOptions
 
     /**
      * BreakDown.
-     * @var array $breakDownList Contains instances of class \CAPSPaymentApi\BreakDown()
+     * @var array $breakdownList Contains instances of class \CAPSPaymentApi\BreakDown()
      */
-    public $breakDownList;
+    public $breakdownList;
 
     /**
      * AdjustAmount.
@@ -32,22 +32,32 @@ class AdjustPaymentPayinsOptions
      */
     public $adjustAmount;
 
+
+    /**
+     * transactionId.
+     * @var string $transactionId Id of the payment transaction.
+     */
+    public $transactionId;
+
     /**
      * Constructor
-     * @param string $orderId (required)
+     * @param string $orderId
      * @param object $metaData
      * @param object $breakDown
      * @param object $adjustAmount
+     * @param string $transactionId
      */
     public function __construct(
-        $orderId,
+        $orderId = "",
         $metaData = "",
         $breakDown = "",
-        $adjustAmount = ""
+        $adjustAmount = "",
+        $transactionId = ""
     ) {
         $this->orderId = $orderId;
         $this->metaData = $metaData;
-        $this->breakDownList = $breakDown;
+        $this->breakdownList = $breakDown;
         $this->adjustAmount = $adjustAmount;
+        $this->transactionId = $transactionId;
     }
 }
