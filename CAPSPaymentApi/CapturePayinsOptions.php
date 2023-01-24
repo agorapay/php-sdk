@@ -8,11 +8,6 @@ namespace CAPSPaymentApi;
  */
 class CapturePayinsOptions
 {
-    /**
-     * Account number of the marketplace
-     * @var string $paymentAccount  Account number of the marketplace
-     */
-    public $paymentAccount;
 
     /**
      * Order id obtained in order creation and to provide in each next request.
@@ -35,9 +30,9 @@ class CapturePayinsOptions
 
     /**
      * BreakDown.
-     * @var array $breakDownList Contains instances of class \CAPSPaymentApi\BreakDown()
+     * @var array $breakdownList Contains instances of class \CAPSPaymentApi\BreakDown()
      */
-    public $breakDownList;
+    public $breakdownList;
 
     /**
      * JSON data for the marketplace
@@ -49,24 +44,21 @@ class CapturePayinsOptions
      * Constructor
      * @param string $orderId (required)
      * @param object $transactionAmount (required)
-     * @param string $paymentAccount
      * @param string $transactionId
      * @param object $metaData
-     * @param array $breakDownList
+     * @param array $breakdownList
      */
     public function __construct(
         $orderId,
         $transactionAmount,
-        $paymentAccount = "",
         $transactionId = "",
         $metaData = "",
-        $breakDownList = ""
+        $breakdownList = ""
     ) {
-        $this->paymentAccount = $paymentAccount;
         $this->orderId = $orderId;
         $this->transactionId = $transactionId;
         $this->metaData = $metaData;
         $this->transactionAmount = $transactionAmount;
-        $this->breakDownList = $breakDownList;
+        $this->breakdownList = $breakdownList;
     }
 }

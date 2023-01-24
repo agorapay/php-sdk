@@ -9,12 +9,6 @@ namespace CAPSPaymentApi;
 class PaymentPayinsOptions
 {
     /**
-     * paymentData. Specific data for a payment method
-     * @var string $paymentData Specific data for a payment method
-     */
-    public $paymentData;
-
-    /**
      * orderId.
      * @var string $orderId
      */
@@ -31,12 +25,6 @@ class PaymentPayinsOptions
      * @var string $orderCountryCode The ISO country code in 3 characters format
      */
     public $orderCountryCode;
-
-    /**
-     * Account number of the marketplace
-     * @var string $paymentAccount Account number of the marketplace
-     */
-    public $paymentAccount;
 
     /**
      * JSON data for the marketplace. This data is not used by payment system.
@@ -89,9 +77,9 @@ class PaymentPayinsOptions
 
     /**
      * List of breakdown for this payment
-     * @var Array $breakDownList Contains instance of class \CAPSPaymentApi\BreakDown()
+     * @var Array $breakdownList Contains instance of class \CAPSPaymentApi\BreakDown()
      */
-    public $breakDownList;
+    public $breakdownList;
 
     /**
      * Alias.
@@ -130,56 +118,58 @@ class PaymentPayinsOptions
     public $cbChallenge;
 
     /**
+     * paymentOptions: [ cardOnFile, withoutCardOnFile ]
+     * @var string $paymentOptions Payment options
+     */
+    public $paymentOptions;
+
+    /**
      * Constructor
      * @param string $urlRedirect (required)
      * @param object $transactionAmount (required)
-     * @param string $paymentData
      * @param string $orderId
      * @param string $orderReference
      * @param string $orderCountryCode
-     * @param string $paymentAccount
      * @param object $metaData
      * @param string $capture
      * @param string $registerAlias
      * @param string $reason
      * @param string $endToEndId
      * @param object $transPaymentMethod
-     * @param array  $breakDownList
+     * @param array  $breakdownList
      * @param object $alias
      * @param object $payer
      * @param object $details
      * @param object $cart
      * @param string $operationDate
      * @param string $cbChallenge
+     * @param string $paymentOptions
      *
      */
     public function __construct(
         $urlRedirect,
         $transactionAmount,
-        $paymentData = "",
         $orderId = "",
         $orderReference = "",
         $orderCountryCode  = "",
-        $paymentAccount  = "",
         $metaData  = "",
         $capture  = "",
         $registerAlias  = "",
         $reason  = "",
         $endToEndId  = "",
         $transPaymentMethod  = "",
-        $breakDownList  = "",
+        $breakdownList  = "",
         $alias  = "",
         $payer  = "",
         $details  = "",
         $cart = "",
         $operationDate  = "",
-        $cbChallenge = ""
+        $cbChallenge = "",
+        $paymentOptions = ""
     ) {
-        $this->paymentData = $paymentData;
         $this->orderId = $orderId;
         $this->orderReference = $orderReference;
         $this->orderCountryCode = $orderCountryCode;
-        $this->paymentAccount = $paymentAccount;
         $this->metaData = $metaData;
         $this->capture = $capture;
         $this->urlRedirect = $urlRedirect;
@@ -191,7 +181,7 @@ class PaymentPayinsOptions
         // object
         $this->transPaymentMethod = $transPaymentMethod;
         // array of objects
-        $this->breakDownList = $breakDownList;
+        $this->breakdownList = $breakdownList;
         // object
         $this->alias = $alias;
         // object
@@ -202,5 +192,6 @@ class PaymentPayinsOptions
         $this->cart = $cart;
         $this->operationDate = $operationDate;
         $this->cbChallenge = $cbChallenge;
+        $this->paymentOptions = $paymentOptions;
     }
 }

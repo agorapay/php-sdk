@@ -49,6 +49,12 @@ class Main
     public $AccountHolder;
 
     /**
+     * Selfcare
+     * @var object $Selfcare \CAPSPaymentApi\ApiSelfcare
+     */
+    public $Selfcare;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -60,5 +66,6 @@ class Main
         $this->Operation = new ApiOperations($this);
         $this->PaymentAccount = new ApiPaymentAccounts($this);
         $this->AccountHolder = new ApiAccountHolder($this);
+        $this->Selfcare = new ApiSelfcare($this);
     }
 }

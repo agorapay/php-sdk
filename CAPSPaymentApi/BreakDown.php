@@ -27,27 +27,27 @@ class BreakDown
 
     /**
      * Comission.
-     * @var object $comission Instance of class Comission
+     * @var object $commission Instance of class Comission
      */
-    public $comission = null;
+    public $commission = null;
 
     /**
      * Constructor
      * @param string $label
      * @param string $sellerAccountNumber
      * @param object $amount
-     * @param object $comission
+     * @param object $commission
      *
      */
     public function __construct(
         $label,
         $sellerAccountNumber,
         $amount,
-        $comission
+        $commission
     ) {
         $this->label = $label;
         $this->sellerAccountNumber = $sellerAccountNumber;
         $this->amount = $amount;
-        $this->comission = $comission;
+        $this->commission = $commission;
     }
 }

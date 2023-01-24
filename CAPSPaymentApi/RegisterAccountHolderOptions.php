@@ -45,10 +45,10 @@ class RegisterAccountHolderOptions
     public $masterAddress;
 
     /**
-     * billingAddress
-     * @var object $billingAddress contains instance of class  \CAPSPaymentApi\RegisterAddress().
+     * commercialAddress
+     * @var object $commercialAddress contains instance of class  \CAPSPaymentApi\RegisterAddress().
      */
-    public $billingAddress;
+    public $commercialAddress;
 
     /**
      * Current or last year turnover in account currency code unit (required).
@@ -98,7 +98,7 @@ class RegisterAccountHolderOptions
      * @param array  $physicalPersons (required)
      * @param object $account (required)
      * @param string $compagnyName
-     * @param object $billingAddress
+     * @param object $commercialAddress
      * @param object $owner (required)
      */
     public function __construct(
@@ -114,7 +114,7 @@ class RegisterAccountHolderOptions
         $currency,
         $owner,
         $compagnyName = "",
-        $billingAddress = ""
+        $commercialAddress = ""
     ) {
         $this->socialReason = $socialReason;
         $this->compagnyName = $compagnyName;
@@ -122,7 +122,7 @@ class RegisterAccountHolderOptions
         $this->legalForm = $legalForm;
         $this->registrationNumber = $registrationNumber;
         $this->masterAddress = $masterAddress;
-        $this->billingAddress = $billingAddress;
+        $this->commercialAddress = $commercialAddress;
         $this->turnover = $turnover;
         $this->regulatedSociety = $regulatedSociety;
         $this->physicalPersons = $physicalPersons;

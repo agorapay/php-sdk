@@ -22,13 +22,25 @@ class Requirement
     public $fileExt;
 
     /**
-     * Content of the document base64 encoded.
-     * @var string $fileContent Content of the document base64 encoded
+		 * Path to the file to upload.
+     * @var string $filePath Path of the file to upload.
      */
-    public $fileContent;
+    public $filePath;
 
     /**
-     * Type of docuemnt (National card identity, KBIS, ...) (required)
+		 * Name of the file to upload.
+     * @var string $fileName Name of the file to upload.
+     */
+    public $fileName;
+
+    /**
+		 * Mime type of the file to upload.
+     * @var string $fileMime Mime type of the file to upload.
+     */
+    public $fileMime;
+
+    /**
+     * Type of document (National card identity, KBIS, ...) (required)
      * @var string $fileType Type of docuemnt (National card identity, KBIS, ...) (required)
      */
     public $fileType;
@@ -37,15 +49,19 @@ class Requirement
      * Constructor
      * @param string $id
      * @param string $fileExt
-     * @param string $fileContent
+     * @param string $filePath
+     * @param string $fileName
+     * @param string $fileMimle
      * @param string $fileType
      * 
      */
-    public function __construct($id, $fileExt, $fileContent, $fileType)
+    public function __construct($id, $fileExt, $filePath, $fileName, $fileMime, $fileType)
     {
         $this->id = $id;
         $this->fileExt = $fileExt;
-        $this->fileContent = $fileContent;
+        $this->filePath = $filePath;
+        $this->fileName = $fileName;
+        $this->fileMime = $fileMime;
         $this->fileType = $fileType;
     }
 }
