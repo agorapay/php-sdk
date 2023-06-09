@@ -11,4 +11,5 @@ abstract class EnumPayoutAutoFrequency
     const OnceADay = "1";
     const OnceAWeek = "2";
     const OnceAMonth = "3";
+    const AutomaticOnThreshold = "10";
 }

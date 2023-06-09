@@ -55,6 +55,12 @@ class Main
     public $Selfcare;
 
     /**
+     * Mandate
+     * @var object $Mandate \CAPSPaymentApi\ApiMandate
+     */
+    public $Mandate;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -67,5 +73,6 @@ class Main
         $this->PaymentAccount = new ApiPaymentAccounts($this);
         $this->AccountHolder = new ApiAccountHolder($this);
         $this->Selfcare = new ApiSelfcare($this);
+        $this->Mandate = new ApiMandate($this);
     }
 }
