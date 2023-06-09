@@ -424,3 +424,41 @@ $result = $api->Selfcare->init($initSelfcareOptions);
 
 ?>
 ```
+
+
+List SDK functions to use for API Mandate
+-------------------------------------------------
+
+You will find in this table which function to used for each API "Mandate" endpoint :
+
+| Mandate Endpoint      | SDK Functions | Method
+| ----------- | ----------- | ----------- |
+| /mandate/create      | $api->Mandate->create(payload)       | POST
+
+#### Example
+
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+
+$createMandateOptions = new \CAPSPaymentApi\CreateMandateOptions(
+  new \CAPSPaymentApi\TransPaymentMethod('4'),
+  new \CAPSPaymentApi\Payer('192.168.0.1', 'testPayer', '', 'FR'),
+  new \CAPSPaymentApi\Details('Martin', 'Dupont', '5 cite Rougemont', 'Paris', '75009', 'FRA', '', '', '', '', '', '', '', '', ''),
+  'http://google.fr'
+);
+
+// call API with /selfcare/init
+$result = $api->Mandate->create($createMandateOptions);
+
+?>
+```
