@@ -16,9 +16,9 @@ class RegisterAccountHolderOptions
 
     /**
      * Commercial name.
-     * @var string $compagnyName Commercial name
+     * @var string $companyName Commercial name
      */
-    public $compagnyName;
+    public $companyName;
 
     /**
      * The ISO country in 3 characters format (required).
@@ -97,7 +97,7 @@ class RegisterAccountHolderOptions
      * @param string $regulatedSociety (required)
      * @param array  $physicalPersons (required)
      * @param object $account (required)
-     * @param string $compagnyName
+     * @param string $companyName
      * @param object $commercialAddress
      * @param object $owner (required)
      */
@@ -113,21 +113,21 @@ class RegisterAccountHolderOptions
         $account,
         $currency,
         $owner,
-        $compagnyName = "",
+        $companyName = "",
         $commercialAddress = ""
     ) {
-        $this->socialReason = $socialReason;
-        $this->compagnyName = $compagnyName;
-        $this->country = $country;
-        $this->legalForm = $legalForm;
+        $this->socialReason       = $socialReason;
+        $this->companyName        = $companyName;
+        $this->country            = $country;
+        $this->legalForm          = $legalForm;
         $this->registrationNumber = $registrationNumber;
-        $this->masterAddress = $masterAddress;
-        $this->commercialAddress = $commercialAddress;
-        $this->turnover = $turnover;
-        $this->regulatedSociety = $regulatedSociety;
-        $this->physicalPersons = $physicalPersons;
-        $this->account = $account;
-        $this->currency = $currency;
-        $this->owner = $owner;
+        $this->masterAddress      = $masterAddress;
+        $this->commercialAddress  = $commercialAddress;
+        $this->turnover           = $turnover;
+        $this->regulatedSociety   = $regulatedSociety;
+        $this->physicalPersons    = $physicalPersons;
+        $this->account            = $account;
+        $this->currency           = $currency;
+        $this->owner              = $owner;
     }
 }

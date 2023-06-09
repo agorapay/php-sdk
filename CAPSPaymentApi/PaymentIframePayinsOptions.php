@@ -112,6 +112,12 @@ class PaymentIframePayinsOptions
     public $paymentOptions;
 
     /**
+     * Operation label transmited in payment system
+     * @var string $reason Operation label transmited in payment system
+     */
+    public $reason;
+
+    /**
      * Constructor
      * @param string $orderReference (required)
      * @param string $orderCountryCode (required)
@@ -130,25 +136,27 @@ class PaymentIframePayinsOptions
      * @param object $details
      * @param string $page
      * @param string $paymentOptions
+     * @param string $reason
      */
     public function __construct(
         $orderReference,
         $orderCountryCode,
         $amount,
         $payer,
-        $paymentAccount = "",
-        $metaData = "",
-        $capture = "",
-        $urlRedirect = "",
-        $endToEndId = "",
-        $breakdownList = "",
-        $cart = "",
-        $recurrent = "",
-        $paymentMethodId = "",
-        $cbChallenge = "",
-        $details = "",
-        $page = "",
-        $paymentOptions = ""
+        $paymentAccount   = "",
+        $metaData         = "",
+        $capture          = "",
+        $urlRedirect      = "",
+        $endToEndId       = "",
+        $breakdownList    = "",
+        $cart             = "",
+        $recurrent        = "",
+        $paymentMethodId  = "",
+        $cbChallenge      = "",
+        $details          = "",
+        $page             = "",
+        $paymentOptions   = "",
+        $reason           = ""
     ) {
         $this->paymentAccount   = $paymentAccount;
         $this->orderReference   = $orderReference;
@@ -167,5 +175,6 @@ class PaymentIframePayinsOptions
         $this->details          = $details;
         $this->page             = $page;
         $this->paymentOptions   = $paymentOptions;
+        $this->reason           = $reason;
     }
 }

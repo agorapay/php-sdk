@@ -91,7 +91,7 @@ class UpdateAccountHolderOptions
      * @param object $account (required)
      * @param string $requestId (required)
      * @param string $socialReason
-     * @param string $compagnyName
+     * @param string $companyName
      * @param string $country
      * @param object $masterAddress
      * @param object $commercialAddress
@@ -105,7 +105,7 @@ class UpdateAccountHolderOptions
         $account,
         $requestId,
         $socialReason = "",
-        $compagnyName = "",
+        $companyName = "",
         $country = "",
         $masterAddress = "",
         $commercialAddress = "",
@@ -115,17 +115,17 @@ class UpdateAccountHolderOptions
         $currency = "",
         $owner = ""
     ) {
-        $this->socialReason = $socialReason;
-        $this->compagnyName = $compagnyName;
-        $this->country = $country;
-        $this->masterAddress = $masterAddress;
-        $this->commercialAddress = $commercialAddress;
-        $this->turnover = $turnover;
-        $this->regulatedSociety = $regulatedSociety;
-        $this->physicalPersons = $physicalPersons;
-        $this->account = $account;
-        $this->currency = $currency;
-        $this->requestId = $requestId;
-        $this->owner = $owner;
+        $this->socialReason       = $socialReason;
+        $this->companyName        = $companyName;
+        $this->country            = $country;
+        $this->masterAddress      = $masterAddress;
+        $this->commercialAddress  = $commercialAddress;
+        $this->turnover           = $turnover;
+        $this->regulatedSociety   = $regulatedSociety;
+        $this->physicalPersons    = $physicalPersons;
+        $this->account            = $account;
+        $this->currency           = $currency;
+        $this->requestId          = $requestId;
+        $this->owner              = $owner;
     }
 }
