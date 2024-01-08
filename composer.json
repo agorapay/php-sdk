@@ -1,5 +1,5 @@
 {
-  "name": "SDK CAPS PAYMENT API",
+  "name": "agorapay/php-sdk",
   "description": "PHP SDK for CAPSPAYMENT API",
   "minimum-stability": "stable",
   "require": {
