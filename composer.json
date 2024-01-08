@@ -1,7 +1,7 @@
 {
-  "name": "agorapay/php-sdk",
+  "name": "unieditions/agorapay-php",
+  "type": "library",
   "description": "PHP SDK for CAPSPAYMENT API",
-  "minimum-stability": "stable",
   "require": {
     "php": ">=5.3",
     "ext-curl": "*",
