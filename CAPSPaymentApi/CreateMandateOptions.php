@@ -29,6 +29,12 @@ class CreateMandateOptions
      */
     public $urlRedirect;
 
+    /**
+     * @var string $otp Force signature by OTP
+     * Enum: [ 1, Y ]
+     */
+    public $otp;
+
 
     /**
      * Constructor
@@ -36,16 +42,19 @@ class CreateMandateOptions
      * @param object $payer (required)
      * @param object $details (required)
      * @param string $urlRedirect
+     * @param string $otp
      */
     public function __construct(
         $transPaymentMethod,
         $payer,
         $details,
-        $urlRedirect = ''
+        $urlRedirect = '',
+        $otp = ''
     ) {
         $this->transPaymentMethod = $transPaymentMethod;
         $this->payer = $payer;
         $this->details = $details;
         $this->urlRedirect = $urlRedirect;
+        $this->otp = $otp;
     }
 }

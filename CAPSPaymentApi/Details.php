@@ -89,6 +89,23 @@ class Details
     public $address2;
 
     /**
+     * bic
+     * @var string $bic
+     * minLength: 8
+     * maxLength: 11
+     * pattern: ^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3})$
+     * Business Identifier Code allocated to a financial institution by the ISO 9362 Registration Authority,
+     * composed by
+      * 4 alphanumerics for the business party prefix,
+      * 2 alphabetics for the country code as defined in ISO 3166-1,
+      * 2 alphanumerics for the business party suffix and
+      * 3 optional alphanumerics for the branch designation
+     */
+    public $bic;
+
+
+
+    /**
      * Constructor
      * @param string firstName
      * @param string lastName
@@ -105,38 +122,41 @@ class Details
      * @param string reference
      * @param string socialReason
      * @param string address2
+     * @param string bic
      */
     public function __construct(
-        $firstName,
-        $lastName,
-        $address,
-        $city,
-        $postalCode,
-        $country,
-        $iban,
-        $email,
-        $state,
-        $gender,
-        $phoneNumber,
-        $sequence,
-        $reference,
-        $socialReason,
-        $address2
+        $firstName = '',
+        $lastName = '',
+        $address = '',
+        $city = '',
+        $postalCode = '',
+        $country = '',
+        $iban = '',
+        $email = '',
+        $state = '',
+        $gender = '',
+        $phoneNumber = '',
+        $sequence = '',
+        $reference = '',
+        $socialReason = '',
+        $address2 = '',
+        $bic = ''
     ) {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->address = $address;
-        $this->city = $city;
-        $this->postalCode = $postalCode;
-        $this->country = $country;
-        $this->iban = $iban;
-        $this->email = $email;
-        $this->state = $state;
-        $this->gender = $gender;
-        $this->phoneNumber = $phoneNumber;
-        $this->sequence = $sequence;
-        $this->reference = $reference;
-        $this->socialReason = $socialReason;
-        $this->address2 = $address2;
+        $this->firstName      = $firstName;
+        $this->lastName       = $lastName;
+        $this->address        = $address;
+        $this->city           = $city;
+        $this->postalCode     = $postalCode;
+        $this->country        = $country;
+        $this->iban           = $iban;
+        $this->email          = $email;
+        $this->state          = $state;
+        $this->gender         = $gender;
+        $this->phoneNumber    = $phoneNumber;
+        $this->sequence       = $sequence;
+        $this->reference      = $reference;
+        $this->socialReason   = $socialReason;
+        $this->address2       = $address2;
+        $this->bic            = $bic;
     }
 }
