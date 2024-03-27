@@ -61,18 +61,25 @@ class Main
     public $Mandate;
 
     /**
+     * PaymentMethod
+     * @var object $Mandate \CAPSPaymentApi\ApiPaymentMethod
+     */
+    public $PaymentMethod;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->Config = new Librairies\Configuration($this);
-        $this->PayOut = new ApiPayouts($this);
-        $this->Transfer = new ApiTransferts($this);
-        $this->PayIn = new ApiPayIns($this);
-        $this->Operation = new ApiOperations($this);
+        $this->Config         = new Librairies\Configuration($this);
+        $this->PayOut         = new ApiPayouts($this);
+        $this->Transfer       = new ApiTransferts($this);
+        $this->PayIn          = new ApiPayIns($this);
+        $this->Operation      = new ApiOperations($this);
         $this->PaymentAccount = new ApiPaymentAccounts($this);
-        $this->AccountHolder = new ApiAccountHolder($this);
-        $this->Selfcare = new ApiSelfcare($this);
-        $this->Mandate = new ApiMandate($this);
+        $this->AccountHolder  = new ApiAccountHolder($this);
+        $this->Selfcare       = new ApiSelfcare($this);
+        $this->Mandate        = new ApiMandate($this);
+        $this->PaymentMethod  = new ApiPaymentMethod($this);
     }
 }

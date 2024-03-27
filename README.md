@@ -91,6 +91,7 @@ You will find in this table which function to used for each API "Payin" endpoint
 | /payin/refund           | $api->Payin->refund($object)          | POST
 | /payin/mandate          | $api->Payin->mandate($object)         | GET
 | /payin/ticket           | $api->Payin->ticket($object)          | GET
+| /payin/reload           | $api->Payin->reload($object)          | POST
 
 
 #### Examples
@@ -434,8 +435,9 @@ You will find in this table which function to used for each API "Mandate" endpoi
 | Mandate Endpoint      | SDK Functions | Method
 | ----------- | ----------- | ----------- |
 | /mandate/create      | $api->Mandate->create(payload)       | POST
+| /mandate/update      | $api->Mandate->update(payload)       | POST
 
-#### Example
+#### Example 1 (SDD B2C mandate generation)
 
 
 ```php
@@ -449,16 +451,212 @@ $api->Config->TokenUrl = 'your_url';
 $api->Config->TokenUser = 'your_username';
 $api->Config->TokenPassword = 'your_password';
 
+$obj_transPaymentMethod = new \CAPSPaymentApi\TransPaymentMethod('');
+$obj_payer              = new \CAPSPaymentApi\Payer('','','','');
+$obj_details            = new \CAPSPaymentApi\Details('','','','','','','','','','','','','','','');
+$str_urlRedirect        = '';
 
-$createMandateOptions = new \CAPSPaymentApi\CreateMandateOptions(
-  new \CAPSPaymentApi\TransPaymentMethod('4'),
-  new \CAPSPaymentApi\Payer('192.168.0.1', 'testPayer', '', 'FR'),
-  new \CAPSPaymentApi\Details('Martin', 'Dupont', '5 cite Rougemont', 'Paris', '75009', 'FRA', '', '', '', '', '', '', '', '', ''),
-  'http://google.fr'
-);
+$obj_transPaymentMethod->id =  '37';
+
+$obj_payer->reference = 'customer1';
+
+$obj_details->gender      = 'M';
+$obj_details->firstName   = 'John';
+$obj_details->lastName    = 'Smith';
+$obj_details->email       = 'js@mycompagny.com';
+$obj_details->address     = 'Rue d\'ici';
+$obj_details->postalCode  = '75000';
+$obj_details->city        = 'Ville';
+$obj_details->country     = 'FRA';
+$obj_details->iban        = 'FR7611808009101234567890147';
+$obj_details->sequence    = 'OOF';
+
+
+$createMandateOptions = new \CAPSPaymentApi\CreateMandateOptions($obj_transPaymentMethod, $obj_payer, $obj_details, $str_urlRedirect);
 
 // call API with /selfcare/init
 $result = $api->Mandate->create($createMandateOptions);
+
+?>
+```
+#### Example 2 (SDD B2B mandate generation)
+
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$obj_transPaymentMethod = new \CAPSPaymentApi\TransPaymentMethod('');
+$obj_payer              = new \CAPSPaymentApi\Payer('','','','');
+$obj_details            = new \CAPSPaymentApi\Details('','','','','','','','','','','','','','','');
+$str_urlRedirect        = '';
+
+$obj_transPaymentMethod->id =  '20';
+
+$obj_payer->reference = 'customer1';
+
+$obj_details->socialReason  = 'My compagny';
+$obj_details->email         = 'js@mycompagny.com';
+$obj_details->address       = 'Rue d\'ici';
+$obj_details->postalCode    = '75000';
+$obj_details->city          = 'Ville';
+$obj_details->country       = 'FRA';
+$obj_details->iban          = 'FR7611808009101234567890147';
+$obj_details->sequence      = 'RCUR';
+
+
+$createMandateOptions = new \CAPSPaymentApi\CreateMandateOptions($obj_transPaymentMethod, $obj_payer, $obj_details, $str_urlRedirect);
+
+// call API with /selfcare/init
+$result = $api->Mandate->create($createMandateOptions);
+
+?>
+```
+#### Example 3 update
+
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$updateMandateOptions = new \CAPSPaymentApi\UpdateMandateOptions('', '');
+$updateMandateOptions->reference = '2020110907201100Y0H1102';
+$updateMandateOptions->mandateId = '5120';
+
+// call API with /selfcare/init
+$result = $api->Mandate->update($updateMandateOptions);
+
+?>
+```
+
+
+
+List SDK functions to use for API PaymentMethod
+-------------------------------------------------
+
+You will find in this table which function to used for each API "PaymentMethod" endpoint :
+
+| PaymentMethod Endpoint      | SDK Functions                             | Method
+| -----------                 | -----------                               | -----------               |
+| /paymentMethod/removeAlias  | $api->PaymentMethod->removeAlias(payload) | POST
+| /paymentMethod/getAlias     | $api->PaymentMethod->getAlias(payload)    | POST
+| /paymentMethod/list         | $api->PaymentMethod->list(payload)        | POST
+| /paymentMethod/getIBAN      | $api->PaymentMethod->getIBAN(payload)     | POST
+
+#### Examples
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$obj_payer              = new \CAPSPaymentApi\Payer('','','','');
+$obj_transPaymentMethod = new \CAPSPaymentApi\TransPaymentMethod('');
+$obj_alias = new \CAPSPaymentApi\Alias('');
+
+$obj_payer->reference = 'payer_123';
+$obj_transPaymentMethod->id =  '83964924';
+$obj_alias->id = '228202063053068462';
+
+
+$removeAliasPaymentMethodOptions = new \CAPSPaymentApi\RemoveAliasPaymentMethodOptions($obj_payer, $obj_transPaymentMethod, $obj_alias);
+
+// call API with /selfcare/init
+$result = $api->PaymentMethod->removeAlias($removeAliasPaymentMethodOptions);
+
+?>
+```
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$obj_payer              = new \CAPSPaymentApi\Payer('','','','');
+$obj_transPaymentMethod = new \CAPSPaymentApi\TransPaymentMethod('');
+
+$obj_payer->reference = 'payer_ref';
+$obj_transPaymentMethod->id =  '83964924';
+
+
+$getAliasPaymentMethodOptions = new \CAPSPaymentApi\GetAliasPaymentMethodOptions($obj_payer, $obj_transPaymentMethod);
+
+// call API with /selfcare/init
+$result = $api->PaymentMethod->getAlias($getAliasPaymentMethodOptions);
+
+?>
+```
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$obj_payer      = new \CAPSPaymentApi\Payer('','','','');
+$obj_contryCode = 'FRA';
+$obj_amount     = new \CAPSPaymentApi\Amount('', '');
+
+$obj_payer->language = 'FR';
+$obj_payer->reference = 'CREF_20210203180537464';
+$obj_payer->IPAddress = '192.168.0.1';
+
+$obj_amount->value = '70';
+$obj_amount->currency = 'EUR';
+
+$listPaymentMethodOptions = new \CAPSPaymentApi\ListPaymentMethodOptions($obj_contryCode, $obj_amount, $obj_payer);
+
+// call API with /selfcare/init
+$result = $api->PaymentMethod->list($listPaymentMethodOptions);
+
+?>
+```
+
+```php
+<?php
+require_once '/absolute/path/sdk/api/vendor/autoload.php';
+
+$api = new CAPSPaymentApi\Main();
+
+$api->Config->BaseUrl = 'http://hostname:port/version';
+$api->Config->TokenUrl = 'your_url';
+$api->Config->TokenUser = 'your_username';
+$api->Config->TokenPassword = 'your_password';
+
+$getIBANPaymentMethodOptions = new \CAPSPaymentApi\GetIBANPaymentMethodOptions('PM202310230V3FG1100');
+
+// call API with /selfcare/init
+$result = $api->PaymentMethod->getIBAN($getIBANPaymentMethodOptions);
 
 ?>
 ```

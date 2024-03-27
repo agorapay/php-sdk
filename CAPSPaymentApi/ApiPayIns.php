@@ -96,7 +96,7 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api /payin/cancel
-     * 
+     *
      * Cancel a Transaction/Order
      *
      * @param object $cancelPayinsOptions Instance of class \CAPSPaymentApi\CancelPayinsOptions
@@ -133,7 +133,7 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api /payin/adjustPayment
-     * 
+     *
      * Adjust the amount of the payment/change the breakdown of the payment
      * Before the cashing of the operation, change the payment amount and/or the breakdown
      * If it's only a change in the breakdown, set the adjustAmount to the same of the transactionAmount
@@ -153,7 +153,7 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api /payin/paymentIframe
-     * 
+     *
      * Submit an Order/ Get an Authent Code
      * When your shopper is ready to pay, submit your order/payment by this request and get an Authent Code.
      * Then save the orderId and open an iframe for the shopper with the authentCode.
@@ -172,7 +172,7 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api payin/refund
-     * 
+     *
      * Refund a Transaction/Order
      * Refund a payment transaction or all the refundable payment transactions of an order
      * @param object $refundPayinsOptions Instance of class \CAPSPaymentApi\RefundPayinsOptions
@@ -190,7 +190,7 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api /payin/mandate
-     * 
+     *
      * Get signed mandate file
      *
      * @param object $mandatePayinsOptions Instance of class \CAPSPaymentApi\MandatePayinsOptions
@@ -210,10 +210,10 @@ class ApiPayins extends Librairies\ApiBase
 
     /**
      * Call api /payin/ticket
-     * 
+     *
      * Get a ticket in JSON or PDF format
      *
-     *  @param object $mandatePayinsOptions Instance of class \CAPSPaymentApi\TicketPayinsOptions
+     *  @param object $ticketPayinsOptions Instance of class \CAPSPaymentApi\TicketPayinsOptions
      * @return object Response data
      */
     public function ticket($ticketPayinsOptions)
@@ -227,4 +227,24 @@ class ApiPayins extends Librairies\ApiBase
         	return $this->getMsgException($exception);
         }
     }
+
+    /**
+     * Call api /payin/reload
+     *
+     * Credit payment account by PayIn SEPA Direct Debit (SDD) for B2C
+     *
+     * @param object $reloadPayinsOptions Instance of class \CAPSPaymentApi\ReloadPayinsOptions
+     * @return object Response data
+     */
+    public function reload($reloadPayinsOptions)
+    {
+        try {
+            $endPoint = "/payin/reload";
+            return $this->filterObject($endPoint, $reloadPayinsOptions);
+        } catch (\Exception $exception) {
+        	return $this->getMsgException($exception);
+        }
+    }
+
+
 }

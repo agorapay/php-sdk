@@ -124,6 +124,14 @@ class PaymentPayinsOptions
     public $paymentOptions;
 
     /**
+     * instantPayment
+     * @var string $instantPayment
+     * The only purpose of this flag is to force Instant Payment for SCT.
+     * Enum: [ EXPECTED ]
+     */
+    public $instantPayment;
+
+    /**
      * Constructor
      * @param string $urlRedirect (required)
      * @param object $transactionAmount (required)
@@ -144,54 +152,57 @@ class PaymentPayinsOptions
      * @param string $operationDate
      * @param string $cbChallenge
      * @param string $paymentOptions
+     * @param string instantPayment
      *
      */
     public function __construct(
         $urlRedirect,
         $transactionAmount,
-        $orderId = "",
-        $orderReference = "",
-        $orderCountryCode  = "",
-        $metaData  = "",
-        $capture  = "",
-        $registerAlias  = "",
-        $reason  = "",
-        $endToEndId  = "",
-        $transPaymentMethod  = "",
-        $breakdownList  = "",
-        $alias  = "",
-        $payer  = "",
-        $details  = "",
-        $cart = "",
-        $operationDate  = "",
-        $cbChallenge = "",
-        $paymentOptions = ""
+        $orderId              = '',
+        $orderReference       = '',
+        $orderCountryCode     = '',
+        $metaData             = '',
+        $capture              = '',
+        $registerAlias        = '',
+        $reason               = '',
+        $endToEndId           = '',
+        $transPaymentMethod   = '',
+        $breakdownList        = '',
+        $alias                = '',
+        $payer                = '',
+        $details              = '',
+        $cart                 = '',
+        $operationDate        = '',
+        $cbChallenge          = '',
+        $paymentOptions       = '',
+        $instantPayment       = ''
     ) {
-        $this->orderId = $orderId;
-        $this->orderReference = $orderReference;
-        $this->orderCountryCode = $orderCountryCode;
-        $this->metaData = $metaData;
-        $this->capture = $capture;
-        $this->urlRedirect = $urlRedirect;
-        $this->registerAlias = $registerAlias;
-        $this->reason = $reason;
-        $this->endToEndId = $endToEndId;
+        $this->orderId            = $orderId;
+        $this->orderReference     = $orderReference;
+        $this->orderCountryCode   = $orderCountryCode;
+        $this->metaData           = $metaData;
+        $this->capture            = $capture;
+        $this->urlRedirect        = $urlRedirect;
+        $this->registerAlias      = $registerAlias;
+        $this->reason             = $reason;
+        $this->endToEndId         = $endToEndId;
         // object
-        $this->transactionAmount = $transactionAmount;
+        $this->transactionAmount  = $transactionAmount;
         // object
         $this->transPaymentMethod = $transPaymentMethod;
         // array of objects
-        $this->breakdownList = $breakdownList;
+        $this->breakdownList      = $breakdownList;
         // object
-        $this->alias = $alias;
+        $this->alias              = $alias;
         // object
-        $this->payer = $payer;
+        $this->payer              = $payer;
         // object
-        $this->details = $details;
+        $this->details            = $details;
         // object
-        $this->cart = $cart;
-        $this->operationDate = $operationDate;
-        $this->cbChallenge = $cbChallenge;
-        $this->paymentOptions = $paymentOptions;
+        $this->cart               = $cart;
+        $this->operationDate      = $operationDate;
+        $this->cbChallenge        = $cbChallenge;
+        $this->paymentOptions     = $paymentOptions;
+        $this->instantPayment     = $instantPayment;
     }
 }
