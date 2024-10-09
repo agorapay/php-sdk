@@ -51,14 +51,14 @@ class Requirement
      * @param string $fileExt
      * @param string $filePath
      * @param string $fileName
-     * @param string $fileMimle
+     * @param string $fileMime
      * @param string $fileType
-     * 
+     *
      */
     public function __construct($id, $fileExt, $filePath, $fileName, $fileMime, $fileType)
     {
-        $this->id = $id;
-        $this->fileExt = $fileExt;
+        $this->id       = $id;
+        $this->fileExt  = $fileExt;
         $this->filePath = $filePath;
         $this->fileName = $fileName;
         $this->fileMime = $fileMime;

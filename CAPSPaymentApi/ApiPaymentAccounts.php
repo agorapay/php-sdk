@@ -42,32 +42,32 @@ class ApiPaymentAccounts extends Librairies\ApiBase
     {
         try {
           $endPoint = "/paymentAccount/setIBAN";
-					$setIbanBody = array(
-						'accountNumber' => $setIbanPaymentAccountOptions->accountNumber,
-						'firstName' => $setIbanPaymentAccountOptions->firstName,
-						'lastName' => $setIbanPaymentAccountOptions->lastName,
-						'socialReason' => $setIbanPaymentAccountOptions->socialReason,
-						'address' => $setIbanPaymentAccountOptions->address,
-						'city' => $setIbanPaymentAccountOptions->city,
-						'postalCode' => $setIbanPaymentAccountOptions->postalCode,
-						'country' => $setIbanPaymentAccountOptions->country,
-						'iban' => $setIbanPaymentAccountOptions->iban,
-						'currency' => $setIbanPaymentAccountOptions->currency,
-						'paymentMethodAlias' => $setIbanPaymentAccountOptions->paymentMethodAlias,
-						'activationDate' => $setIbanPaymentAccountOptions->activationDate,
-						'fileType' => $setIbanPaymentAccountOptions->fileType,
-					);
-					if ($setIbanPaymentAccountOptions->filePath !== "") {
-						return $this->filterObject($endPoint, $setIbanBody, 'POST', array(
-							'file' => array(
-								'fileName' => $setIbanPaymentAccountOptions->fileName,
-								'fileType' => $setIbanPaymentAccountOptions->fileMime,
-								'filePath' => $setIbanPaymentAccountOptions->filePath,
-							)
-						));
-					} else {
-						return $this->filterObject($endPoint, $setIbanBody, 'POST');
-					}
+          $setIbanBody = array(
+            'address'             => $setIbanPaymentAccountOptions->address,
+            'city'                => $setIbanPaymentAccountOptions->city,
+            'postalCode'          => $setIbanPaymentAccountOptions->postalCode,
+            'country'             => $setIbanPaymentAccountOptions->country,
+            'iban'                => $setIbanPaymentAccountOptions->iban,
+            'currency'            => $setIbanPaymentAccountOptions->currency,
+            'accountNumber'       => $setIbanPaymentAccountOptions->accountNumber,
+            'firstName'           => $setIbanPaymentAccountOptions->firstName,
+            'lastName'            => $setIbanPaymentAccountOptions->lastName,
+            'socialReason'        => $setIbanPaymentAccountOptions->socialReason,
+            'paymentMethodAlias'  => $setIbanPaymentAccountOptions->paymentMethodAlias,
+            'paymentMethodKey'    => $setIbanPaymentAccountOptions->paymentMethodKey,
+          );
+          if ($setIbanPaymentAccountOptions->filePath !== "")
+          {
+            return $this->filterObject($endPoint, $setIbanBody, 'POST', array(
+              'file' => array(
+                'fileName' => $setIbanPaymentAccountOptions->fileName,
+                'fileType' => $setIbanPaymentAccountOptions->fileMime,
+                'filePath' => $setIbanPaymentAccountOptions->filePath,
+              )
+            ));
+          } else {
+            return $this->filterObject($endPoint, $setIbanBody, 'POST');
+          }
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);
         }
