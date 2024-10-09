@@ -69,22 +69,22 @@ class ApiAccountHolder extends Librairies\ApiBase
     {
         try {
             $endPoint = "/accountHolder/uploadDocument";
-						$uploadBody = array(
-							'requestId' => $uploadDocumentAccountHolderOptions->requestId,
-							'requirements' => array(
-								array(
-									'fileExt' => $uploadDocumentAccountHolderOptions->requirements[0]->fileExt,
-									'id' => $uploadDocumentAccountHolderOptions->requirements[0]->id,
-									'fileType' => $uploadDocumentAccountHolderOptions->requirements[0]->fileType,
-								)
-							)
-						);
+            $uploadBody = array(
+              'requestId'     => $uploadDocumentAccountHolderOptions->requestId,
+              'requirements'  => array(
+                array(
+                  'fileExt'   => $uploadDocumentAccountHolderOptions->requirements[0]->fileExt,
+                  'id'        => $uploadDocumentAccountHolderOptions->requirements[0]->id,
+                  'fileType'  => $uploadDocumentAccountHolderOptions->requirements[0]->fileType,
+                )
+              )
+            );
             return $this->filterObject($endPoint, $uploadBody, 'POST', array(
-							'file' => array(
-								'fileName' => $uploadDocumentAccountHolderOptions->requirements[0]->fileName,
-								'fileType' => $uploadDocumentAccountHolderOptions->requirements[0]->fileMime,
-								'filePath' => $uploadDocumentAccountHolderOptions->requirements[0]->filePath
-							)
+              'file' => array(
+                'fileName' => $uploadDocumentAccountHolderOptions->requirements[0]->fileName,
+                'fileType' => $uploadDocumentAccountHolderOptions->requirements[0]->fileMime,
+                'filePath' => $uploadDocumentAccountHolderOptions->requirements[0]->filePath
+               )
             ));
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);

@@ -4,7 +4,7 @@ namespace CAPSPaymentApi;
 
 /**
  * Description of class UnregisterAccountHolderOptions. Used for call api /accountHolder/uploadDocument
- * 
+ *
  */
 class UploadDocumentAccountHolderOptions
 {
@@ -25,13 +25,16 @@ class UploadDocumentAccountHolderOptions
      * Constructor
      * @param array $requirements (required)
      * @param string $requestId (required)
-    
-     * 
+
+     *
      */
-    public function __construct($requirements, $requestId)
+    public function __construct(
+      $requirements,
+      $requestId
+    )
     {
         $this->requirements = $requirements;
-        $this->requestId = $requestId;
-       
+        $this->requestId    = $requestId;
+
     }
 }

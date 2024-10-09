@@ -58,30 +58,6 @@ class SetIbanPaymentAccountOptions
     public $country;
 
     /**
-     * Type of the file contening the proof document [JPEG, JPG, PNG, PDF] (required) .
-     * @var string fileType Type of the file contening the proof document [JPEG, JPG, PNG, PDF] (required)
-     */
-    public $fileType;
-
-    /**
-     * The path of the file contening the proof.
-     * @var string filePath The path of the file contening the proof
-     */
-    public $filePath;
-
-    /**
-     * The name of the file contening the proof.
-     * @var string fileName The name of the file contening the proof 
-     */
-    public $fileName;
-
-	  /**
-     * The mime type of the file contening the proof.
-     * @var string fileName The mime type of the file contening the proof.
-     */
-    public $fileMime;
-
-    /**
      * The new IBAN (required).
      * @var string iban  The new IBAN (required)
      */
@@ -100,10 +76,43 @@ class SetIbanPaymentAccountOptions
     public $paymentMethodAlias;
 
     /**
+     * Type of payment method.
+     * @var string paymentMethodKey Type of payment method
+     * Type of payment method
+     *      - SCT
+     *      - SCT INST
+     */
+    public $paymentMethodKey;
+
+    /**
+     * Type of the file contening the proof document [JPEG, JPG, PNG, PDF] (required) .
+     * @var string fileType Type of the file contening the proof document [JPEG, JPG, PNG, PDF] (required)
+     */
+    //public $fileType;
+
+    /**
+     * The path of the file contening the proof.
+     * @var string filePath The path of the file contening the proof
+     */
+    public $filePath;
+
+    /**
+     * The name of the file contening the proof.
+     * @var string fileName The name of the file contening the proof
+     */
+    public $fileName;
+
+	  /**
+     * The mime type of the file contening the proof.
+     * @var string fileName The mime type of the file contening the proof.
+     */
+    public $fileMime;
+
+    /**
      * Date of the activation operation. The format must be YYYYMMDD.
      * @var string activationDate Upper or equal to the date of the day
      */
-    public $activationDate;
+    //public $activationDate;
 
     /**
      * Constructor
@@ -111,52 +120,49 @@ class SetIbanPaymentAccountOptions
      * @param string $city (required)
      * @param string $postalCode (required)
      * @param string $country (required)
-     * @param string $fileType (required)
      * @param string $iban (required)
      * @param string $currency (required)
      * @param string $accountNumber
      * @param string $firstName
      * @param string $lastName
      * @param string $socialReason
+     * @param string $paymentMethodAlias
+     * @param string $paymentMethodKey
      * @param string $filePath
      * @param string $fileName
      * @param string $fileMime
-     * @param string $paymentMethodAlias
-     * @param string $activationDate
      */
     public function __construct(
-        $address,
-        $city,
-        $postalCode,
-        $country,
-        $fileType,
-        $iban,
-        $currency,
-        $accountNumber = "",
-        $firstName = "",
-        $lastName = "",
-        $socialReason = "",
-        $filePath = "",
-        $fileName = "",
-        $fileMime = "",
-        $paymentMethodAlias = "",
-        $activationDate = ""
+      $address,
+      $city,
+      $postalCode,
+      $country,
+      $iban,
+      $currency,
+      $accountNumber      = "",
+      $firstName          = "",
+      $lastName           = "",
+      $socialReason       = "",
+      $paymentMethodAlias = "",
+      $paymentMethodKey   = "",
+      $filePath           = "",
+      $fileName           = "",
+      $fileMime           = ""
     ) {
-        $this->accountNumber = $accountNumber;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->socialReason = $socialReason;
-        $this->address = $address;
-        $this->city = $city;
-        $this->postalCode = $postalCode;
-        $this->country = $country;
-        $this->fileType = $fileType;
-        $this->filePath = $filePath;
-        $this->fileName = $fileName;
-        $this->fileMime = $fileMime;
-        $this->iban = $iban;
-        $this->currency = $currency;
+        $this->address            = $address;
+        $this->city               = $city;
+        $this->postalCode         = $postalCode;
+        $this->country            = $country;
+        $this->iban               = $iban;
+        $this->currency           = $currency;
+        $this->accountNumber      = $accountNumber;
+        $this->firstName          = $firstName;
+        $this->lastName           = $lastName;
+        $this->socialReason       = $socialReason;
         $this->paymentMethodAlias = $paymentMethodAlias;
-        $this->activationDate = $activationDate;
+        $this->paymentMethodKey   = $paymentMethodKey;
+        $this->filePath           = $filePath;
+        $this->fileName           = $fileName;
+        $this->fileMime           = $fileMime;
     }
 }
