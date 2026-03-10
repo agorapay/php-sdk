@@ -78,21 +78,35 @@ List SDK functions to use for API Payin
 
 You will find in this table which function to used for each API "Payin" endpoint :
 
-| Payin Endpoint          | SDK Functions                         | Method |
-| -----------             | -----------                           |----------- |
-| /payin/payment          | $api->Payin->payment($object)         | POST
-| /payin/paymentDetails   | $api->Payin->paymentDetails($object)  | POST
-| /payin/paymentMethods   | $api->Payin->paymentMethods($object)  | POST
-| /payin/capture          | $api->Payin->capture($object)         | POST
-| /payin/cancel           | $api->Payin->cancel($object)          | POST
-| /payin/orderDetails     | $api->Payin->orderDetails($object)    | GET
-| /payin/adjustPayment    | $api->Payin->adjustPayment($object)   | POST
-| /payin/paymentIframe    | $api->Payin->paymentIframe($object)   | POST
-| /payin/refund           | $api->Payin->refund($object)          | POST
-| /payin/mandate          | $api->Payin->mandate($object)         | GET
-| /payin/ticket           | $api->Payin->ticket($object)          | GET
-| /payin/reload           | $api->Payin->reload($object)          | POST
+| Payin Endpoint             | SDK Functions                              | Method |
+| -----------                | -----------                                |--------|
+| /payin/payment             | $api->PayIn->payment($object)              | POST   |
+| /payin/paymentSecure       | $api->PayIn->paymentSecure($object)        | POST   |
+| /payin/paymentDetails      | $api->PayIn->paymentDetails($object)        | POST   |
+| /payin/paymentMethods      | $api->PayIn->paymentMethods($object)       | POST   |
+| /payin/capture             | $api->PayIn->capture($object)               | POST   |
+| /payin/cancel              | $api->PayIn->cancel($object)               | POST   |
+| /payin/orderDetails        | $api->PayIn->orderDetails($object)          | GET    |
+| /payin/adjustPayment       | $api->PayIn->adjustPayment($object)         | POST   |
+| /payin/paymentIframe       | $api->PayIn->paymentIframe($object)         | POST   |
+| /payin/paymentIframeSecure | $api->PayIn->paymentIframeSecure($object)   | POST   |
+| /payin/refund              | $api->PayIn->refund($object)                | POST   |
+| /payin/mandate             | $api->PayIn->mandate($object)               | GET    |
+| /payin/ticket              | $api->PayIn->ticket($object)               | GET    |
+| /payin/reload              | $api->PayIn->reload($object)                | POST   |
 
+**Note:** Pour /payin/paymentIframe et /payin/paymentIframeSecure, le champ `details` ne doit plus contenir `iban`. Utilisez la classe `\CAPSPaymentApi\DetailsPaymentIframe` pour les détails.  
+**Note:** La réponse de /payin/paymentMethods utilise le champ `cardBrand` (et non plus `brand`).
+
+**Champs de requête/réponse récents :**
+- Requête /payin/payment : le champ `details` peut contenir `socialReason`, `address2`, `bic`.
+- Requête /payin/paymentIframe et paymentIframeSecure : `registerAlias`, `alias`, `unsignificantAmount` sont acceptés ; `details` ne contient plus `iban`.
+- Réponse /paymentAccount/list : inclut `iban`. Réponse /paymentAccount : inclut `reference`.
+- Réponse /accountHolder/register, registrationDetails, update : inclut `status`. Réponse /accountHolder/uploadDocument : inclut `accountNumber`, `paymentMethodAlias`, `status`.
+- Réponse physicalPersons[i] de /accountHolder/register : inclut `resident`, `physicalAddress`.
+- Réponse /payin/refund : inclut `transactionId`.
+- Réponse /operations/list : `operationList[i].accountType` est une chaîne (principal, collection, etc.) ; `operationList[i]` peut contenir `paymentMethodKey`, `internalRemittance`, `iban`, `bic`, `payerRef`, `endToEndId`, `remittanceInformation` ; `breakdownList[j]` peut contenir `commission`.
+- Requête /paymentAccount/payoutAuto : `frequency` peut prendre la valeur "11". Requête /accountHolder/register : `physicalPersons[i].roles` peut contenir "PR" ; `productCode`, `NAFCode`, `authorizedOverdraft` sont acceptés.
 
 #### Examples
 
@@ -229,8 +243,9 @@ You will find in this table which function to used for each API "PaymentAccount"
 | PaymentAccount Endpoint      | SDK Functions | Method
 | ----------- | ----------- |----------- |
 | /paymentAccount/setFloorLimit      | $api->PaymentAccount->setFloorLimit($payload) | POST
-| /paymentAccount/setIBAN   | $api->PaymentAccount->setIBAN($payload)        | POST
-| /paymentAccount/List   | $api->PaymentAccount->List($payload)        | POST
+| /paymentAccount/setIBAN               | $api->PaymentAccount->setIBAN($payload)        | POST
+| /paymentAccount/setAuthorizedOverdraft| $api->PaymentAccount->setAuthorizedOverdraft($payload) | POST
+| /paymentAccount/List                  | $api->PaymentAccount->List($payload)           | POST
 | /paymentAccount   | $api->PaymentAccount->paymentAccount(payload)       | GET
 | /paymentAccount/payoutAuto   | $api->PaymentAccount->payoutAuto(payload)       | POST
 | /paymentAccount/credit   | $api->PaymentAccount->credit(payload)       | POST
@@ -347,13 +362,14 @@ List SDK functions to use for API AccountHolder
 
 You will find in this table which function to used for each API "AccountHolder" endpoint :
 
-| Transfer Endpoint      | SDK Functions | Method
-| ----------- | ----------- | ----------- |
-| /accountHolder/register      | $api->AccountHolder->register(payload)       | POST
-| /accountHolder/update      | $api->AccountHolder->update(payload)       | POST
-| /accountHolder/uploadDocument      | $api->AccountHolder->uploadDocument(payload)       | POST
-| /accountHolder/registrationDetails      | $api->AccountHolder->registrationDetails(payload)       | GET
-| /accountHolder/unregister      | $api->AccountHolder->unregister(payload)       | POST
+| AccountHolder Endpoint        | SDK Functions | Method
+| -----------                  | -----------   | ------ |
+| /accountHolder/register      | $api->AccountHolder->register(payload)             | POST
+| /accountHolder/onlineRegister| $api->AccountHolder->onlineRegister(payload)       | POST
+| /accountHolder/update        | $api->AccountHolder->update(payload)                | POST
+| /accountHolder/uploadDocument| $api->AccountHolder->uploadDocument(payload)        | POST
+| /accountHolder/registrationDetails | $api->AccountHolder->registrationDetails(payload) | GET
+| /accountHolder/unregister    | $api->AccountHolder->unregister(payload)             | POST
 
 #### Example
 

@@ -94,10 +94,28 @@ class PaymentIframePayinsOptions
     public $cbChallenge;
 
     /**
-     * details. Instance of class \CAPSPaymentApi\Details()
-     * @var object $details Payment details information For some payment methods, additional details are needed.
+     * details. Use \CAPSPaymentApi\DetailsPaymentIframe() for paymentIframe/paymentIframeSecure (iban is not accepted in details for these APIs).
+     * @var object $details Payment details information. Do not use Details with iban for iframe APIs.
      */
     public $details;
+
+    /**
+     * Register alias. Specific data for a payment method.
+     * @var string $registerAlias
+     */
+    public $registerAlias;
+
+    /**
+     * Alias. Instance of class \CAPSPaymentApi\Alias()
+     * @var object $alias
+     */
+    public $alias;
+
+    /**
+     * Unsignificant amount indicator.
+     * @var string $unsignificantAmount
+     */
+    public $unsignificantAmount;
 
     /**
      * page: [ full, page ]
@@ -133,48 +151,57 @@ class PaymentIframePayinsOptions
      * @param string $recurrent
      * @param string $paymentMethodId
      * @param string $cbChallenge
-     * @param object $details
+     * @param object $details Use DetailsPaymentIframe (iban not accepted for iframe APIs)
      * @param string $page
      * @param string $paymentOptions
      * @param string $reason
+     * @param string $registerAlias
+     * @param object $alias
+     * @param string $unsignificantAmount
      */
     public function __construct(
         $orderReference,
         $orderCountryCode,
         $amount,
         $payer,
-        $paymentAccount   = "",
-        $metaData         = "",
-        $capture          = "",
-        $urlRedirect      = "",
-        $endToEndId       = "",
-        $breakdownList    = "",
-        $cart             = "",
-        $recurrent        = "",
-        $paymentMethodId  = "",
-        $cbChallenge      = "",
-        $details          = "",
-        $page             = "",
-        $paymentOptions   = "",
-        $reason           = ""
+        $paymentAccount       = "",
+        $metaData             = "",
+        $capture              = "",
+        $urlRedirect          = "",
+        $endToEndId           = "",
+        $breakdownList        = "",
+        $cart                 = "",
+        $recurrent            = "",
+        $paymentMethodId      = "",
+        $cbChallenge          = "",
+        $details              = "",
+        $page                 = "",
+        $paymentOptions       = "",
+        $reason               = "",
+        $registerAlias        = "",
+        $alias                = "",
+        $unsignificantAmount  = ""
     ) {
-        $this->paymentAccount   = $paymentAccount;
-        $this->orderReference   = $orderReference;
-        $this->orderCountryCode = $orderCountryCode;
-        $this->metaData         = $metaData;
-        $this->capture          = $capture;
-        $this->urlRedirect      = $urlRedirect;
-        $this->endToEndId       = $endToEndId;
-        $this->amount           = $amount;
-        $this->breakdownList    = $breakdownList;
-        $this->payer            = $payer;
-        $this->cart             = $cart;
-        $this->recurrent        = $recurrent;
-        $this->paymentMethodId  = $paymentMethodId;
-        $this->cbChallenge      = $cbChallenge;
-        $this->details          = $details;
-        $this->page             = $page;
-        $this->paymentOptions   = $paymentOptions;
-        $this->reason           = $reason;
+        $this->paymentAccount       = $paymentAccount;
+        $this->orderReference       = $orderReference;
+        $this->orderCountryCode     = $orderCountryCode;
+        $this->metaData             = $metaData;
+        $this->capture              = $capture;
+        $this->urlRedirect          = $urlRedirect;
+        $this->endToEndId           = $endToEndId;
+        $this->amount               = $amount;
+        $this->breakdownList        = $breakdownList;
+        $this->payer                = $payer;
+        $this->cart                 = $cart;
+        $this->recurrent            = $recurrent;
+        $this->paymentMethodId      = $paymentMethodId;
+        $this->cbChallenge          = $cbChallenge;
+        $this->details              = $details;
+        $this->page                 = $page;
+        $this->paymentOptions       = $paymentOptions;
+        $this->reason               = $reason;
+        $this->registerAlias        = $registerAlias;
+        $this->alias                = $alias;
+        $this->unsignificantAmount  = $unsignificantAmount;
     }
 }

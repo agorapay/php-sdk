@@ -145,6 +145,23 @@ class ApiPaymentAccounts extends Librairies\ApiBase
     }
 
     /**
+     * Call api /paymentAccount/setAuthorizedOverdraft
+     * Set authorized overdraft for a payment account
+     *
+     * @param object $setAuthorizedOverdraftPaymentAccountOptions Instance of class \CAPSPaymentApi\SetAuthorizedOverdraftPaymentAccountOptions
+     * @return object Response data
+     */
+    public function setAuthorizedOverdraft($setAuthorizedOverdraftPaymentAccountOptions)
+    {
+        try {
+            $endPoint = "/paymentAccount/setAuthorizedOverdraft";
+            return $this->filterObject($endPoint, $setAuthorizedOverdraftPaymentAccountOptions);
+        } catch (\Exception $exception) {
+            return $this->getMsgException($exception);
+        }
+    }
+
+    /**
      * Call api /paymentAccount/disableIBAN
      * Start disable IBAN process
      *

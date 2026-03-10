@@ -87,6 +87,24 @@ class RegisterAccountHolderOptions
     public $owner;
 
     /**
+     * Product code
+     * @var string $productCode
+     */
+    public $productCode;
+
+    /**
+     * NAF code (French activity code)
+     * @var string $NAFCode
+     */
+    public $NAFCode;
+
+    /**
+     * Authorized overdraft amount
+     * @var string $authorizedOverdraft
+     */
+    public $authorizedOverdraft;
+
+    /**
      * Constructor
      * @param string $socialReason (required)
      * @param string $country (required)
@@ -100,6 +118,9 @@ class RegisterAccountHolderOptions
      * @param string $companyName
      * @param object $commercialAddress
      * @param object $owner (required)
+     * @param string $productCode
+     * @param string $NAFCode
+     * @param string $authorizedOverdraft
      */
     public function __construct(
         $socialReason,
@@ -114,7 +135,10 @@ class RegisterAccountHolderOptions
         $currency,
         $owner,
         $companyName = "",
-        $commercialAddress = ""
+        $commercialAddress = "",
+        $productCode = "",
+        $NAFCode = "",
+        $authorizedOverdraft = ""
     ) {
         $this->socialReason       = $socialReason;
         $this->companyName        = $companyName;
@@ -129,5 +153,8 @@ class RegisterAccountHolderOptions
         $this->account            = $account;
         $this->currency           = $currency;
         $this->owner              = $owner;
+        $this->productCode        = $productCode;
+        $this->NAFCode            = $NAFCode;
+        $this->authorizedOverdraft = $authorizedOverdraft;
     }
 }

@@ -12,4 +12,5 @@ abstract class EnumRole
     const Mandatary = "MD";
     const ProtalAdmin = "AP";
     const LegalRepresentative = "CP";
+    const PersonneReference = "PR";
 }

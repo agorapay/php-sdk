@@ -42,6 +42,23 @@ class ApiAccountHolder extends Librairies\ApiBase
     }
 
     /**
+     * Call api /accountHolder/onlineRegister
+     * Start online registration of a new account holder
+     *
+     * @param object $onlineRegisterAccountHolderOptions Instance of class \CAPSPaymentApi\OnlineRegisterAccountHolderOptions
+     * @return object Response data
+     */
+    public function onlineRegister($onlineRegisterAccountHolderOptions)
+    {
+        try {
+            $endPoint = "/accountHolder/onlineRegister";
+            return $this->filterObject($endPoint, $onlineRegisterAccountHolderOptions);
+        } catch (\Exception $exception) {
+            return $this->getMsgException($exception);
+        }
+    }
+
+    /**
      * Call api /accountHolder/update
      * Start updating  account holder
      *

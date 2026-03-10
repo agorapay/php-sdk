@@ -2,19 +2,31 @@
 namespace CAPSPaymentApi;
 
 /**
- * Abastract class Enum for AccountType
- * @abstract
+ * Abstract class Enum for AccountType.
+ * In /operations/list response, accountType is now a string from this list (not numeric id).
  */
 abstract class EnumAccountType
 {
-    const principal = "1";
-    const waiting = "3";
-    const suspense = "4";
-    const change = "5";
-    const commission = "6";
-    const voucher = "13";
-    const reliquat = "14";
-    const autorization = "15";
-    const preAutorization = "16";
-    
+    const principal = "principal";
+    const collection = "collection";
+    const waiting = "waiting";
+    const suspense = "suspense";
+    const change = "change";
+    const commission = "commission";
+    const collect = "collect";
+    const cantonment = "cantonment";
+    const technical = "technical";
+    const reconciliation = "reconciliation";
+    const cancel = "cancel";
+    const freeze = "freeze";
+    const voucher = "voucher";
+    const reliquat = "reliquat";
+    const autorization = "autorization";
+    const preAutorization = "pre-autorization";
+    const counterAutorization = "counter autorization";
+    const counterPreAutorization = "counter pre-autorization";
+    const waitingRefund = "waiting refund";
+    const disbursement = "disbursement";
+    const tva = "tva";
+    const hit = "hit";
 }
