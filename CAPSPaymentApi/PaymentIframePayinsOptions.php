@@ -94,8 +94,8 @@ class PaymentIframePayinsOptions
     public $cbChallenge;
 
     /**
-     * details. Use \CAPSPaymentApi\DetailsPaymentIframe() for paymentIframe/paymentIframeSecure (iban is not accepted in details for these APIs).
-     * @var object $details Payment details information. Do not use Details with iban for iframe APIs.
+     * details. Optional `details.iban` is omitted from the request JSON when empty. \CAPSPaymentApi\DetailsPaymentIframe omits the property entirely.
+     * @var object $details Payment details information (\CAPSPaymentApi\Details or \CAPSPaymentApi\DetailsPaymentIframe).
      */
     public $details;
 
@@ -151,7 +151,7 @@ class PaymentIframePayinsOptions
      * @param string $recurrent
      * @param string $paymentMethodId
      * @param string $cbChallenge
-     * @param object $details Use DetailsPaymentIframe (iban not accepted for iframe APIs)
+     * @param object $details \CAPSPaymentApi\Details or \CAPSPaymentApi\DetailsPaymentIframe
      * @param string $page
      * @param string $paymentOptions
      * @param string $reason

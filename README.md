@@ -95,18 +95,25 @@ You will find in this table which function to used for each API "Payin" endpoint
 | /payin/ticket              | $api->PayIn->ticket($object)               | GET    |
 | /payin/reload              | $api->PayIn->reload($object)                | POST   |
 
-**Note:** Pour /payin/paymentIframe et /payin/paymentIframeSecure, le champ `details` ne doit plus contenir `iban`. Utilisez la classe `\CAPSPaymentApi\DetailsPaymentIframe` pour les détails.  
+**Note:** Pour /payin/payment, /payin/paymentSecure, /payin/paymentIframe et /payin/paymentIframeSecure, le champ `details.iban` est **facultatif** : le SDK n’envoie pas `iban` dans le JSON lorsqu’il est vide (`null`, `""`, ou chaîne blanche après trim). Pour ne pas manipuler `iban` du tout, vous pouvez utiliser `\CAPSPaymentApi\DetailsPaymentIframe`.  
 **Note:** La réponse de /payin/paymentMethods utilise le champ `cardBrand` (et non plus `brand`).
 
 **Champs de requête/réponse récents :**
-- Requête /payin/payment : le champ `details` peut contenir `socialReason`, `address2`, `bic`.
-- Requête /payin/paymentIframe et paymentIframeSecure : `registerAlias`, `alias`, `unsignificantAmount` sont acceptés ; `details` ne contient plus `iban`.
+- Requête /payin/payment, /payin/paymentSecure, /payin/paymentIframe et paymentIframeSecure : le champ `details` peut contenir `socialReason`, `address2`, `bic` ; `details.iban` est facultatif (présent dans le JSON seulement s’il est renseigné avec une valeur non vide après trim).
+- Requête /payin/paymentIframe et paymentIframeSecure : `registerAlias`, `alias`, `unsignificantAmount` sont acceptés.
 - Réponse /paymentAccount/list : inclut `iban`. Réponse /paymentAccount : inclut `reference`.
 - Réponse /accountHolder/register, registrationDetails, update : inclut `status`. Réponse /accountHolder/uploadDocument : inclut `accountNumber`, `paymentMethodAlias`, `status`.
+- Requête /accountHolder/uploadDocument : le SDK lit le binaire depuis `Requirement.filePath`, l’encode en Base64 et construit le `multipart/form-data` (champ `json` + champ `file` avec `Content-Disposition: form-data; name="file"; filename="…"`, `Content-Transfer-Encoding: base64`, `Content-Type` = `fileMime`). Ne pas envoyer le fichier déjà encodé en Base64 depuis l’application.
 - Réponse physicalPersons[i] de /accountHolder/register : inclut `resident`, `physicalAddress`.
 - Réponse /payin/refund : inclut `transactionId`.
 - Réponse /operations/list : `operationList[i].accountType` est une chaîne (principal, collection, etc.) ; `operationList[i]` peut contenir `paymentMethodKey`, `internalRemittance`, `iban`, `bic`, `payerRef`, `endToEndId`, `remittanceInformation` ; `breakdownList[j]` peut contenir `commission`.
 - Requête /paymentAccount/payoutAuto : `frequency` peut prendre la valeur "11". Requête /accountHolder/register : `physicalPersons[i].roles` peut contenir "PR" ; `productCode`, `NAFCode`, `authorizedOverdraft` sont acceptés.
+
+**API 12.2.0 (Swagger apiin 12.2.0 — fichier `ABT/apiin.12.2.0.json.txt`) :**
+- `/vIban/create`, `/vIban/list` (GET), `/vIban/delete` via `$api->Viban` (`VIbanCreateOptions`, `VIbanListOptions`, `VIbanDeleteOptions`). Suppression : propriété JSON **`virtualIBAN`** (pas `accountNumber`+`vibanId`).
+- `/operations/list` : critères `operationType`, `operationStatus`, `internalRemittance` (libellés string pour type/statut ; `EnumOperationType` / `EnumOperationStatus`).
+- `/accountHolder/onlineRegister` : champs requis incl. `productCode`, `externalReference`, `NAFCode`, `VATCode`, `introducerRiskLevel`, `usPerson` ; scoring au niveau racine : **`introducerRiskScore`** (l’ancien champ `scoring` a été retiré du schéma 12.2.0). Le SDK expose `introducerRiskScore` sur `OnlineRegisterAccountHolderOptions`.
+- `accountType` : orthographe officielle `counter autorization` et `counter pre-autorization` (`EnumAccountType`).
 
 #### Examples
 
@@ -212,6 +219,20 @@ You will find in this table which function to used for each API "Operation" endp
 | ----------- | ----------- |----------- |
 | /operations/list     | $api->Operation->operationList($object)       | POST
 
+**API 12.2.0+** : `ListOperationOptions` accepte en plus les critères `operationType` et `operationStatus` (libellés string, voir `EnumOperationType` et `EnumOperationStatus`).
+
+List SDK functions to use for API vIban (12.2.0+)
+-------------------------------------------------
+
+| vIban Endpoint   | SDK Functions | Method |
+| -----------      | -----------   | ------ |
+| /vIban/create    | $api->Viban->create($object)     | POST |
+| /vIban/list      | $api->Viban->vibanList($object)  | GET (critères en query, voir `VIbanListOptions`) |
+| /vIban/delete    | $api->Viban->deleteViban($object) | POST |
+
+*Note : la méthode PHP s’appelle `vibanList` (mot réservé `list`) et `deleteViban` pour éviter toute ambiguïté. Schémas : `vIbanCreateRequest` (accountNumber, payer optionnel), `vIbanListRequest`, `vIbanDeleteRequest` (champ requis `virtualIBAN`).*
+
+Voir aussi `docs/SWAGGER.md` et le fichier `ABT/apiin.12.2.0.json.txt`.
 
 #### Example
 
@@ -227,10 +248,10 @@ $api->Config->TokenUrl = 'your_url';
 $api->Config->TokenUser = 'your_username';
 $api->Config->TokenPassword = 'your_password';
 
-$listOperationOptions = new \CAPSPaymentApi\ListOperationOptions('10', '1', '010820101000', '281020101900', '150.00', '100.00', '123456', 'EUR', '123456', 'SDD', '234567', '345678');
+$listOperationOptions = new \CAPSPaymentApi\ListOperationOptions('10', '1', '010820101000', '281020101900', '150.00', '100.00', '123456', 'EUR', '123456', 'SDD', '234567', '345678', \CAPSPaymentApi\EnumOperationType::Payment, \CAPSPaymentApi\EnumOperationStatus::Cashed);
 
 // call API with /operations/list
-$result = $api->Operation->operation_list($listOperationOptions);
+$result = $api->Operation->operationList($listOperationOptions);
 
 ?>
 ```

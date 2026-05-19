@@ -69,6 +69,26 @@ class ListOperationOptions
     public $parentAccountNumber;
 
     /**
+     * Operation type filter (string label, not numeric id — API 12.2.0+).
+     * Use values from \CAPSPaymentApi\EnumOperationType.
+     * @var string $operationType
+     */
+    public $operationType;
+
+    /**
+     * Operation status filter.
+     * Use values from \CAPSPaymentApi\EnumOperationStatus.
+     * @var string $operationStatus
+     */
+    public $operationStatus;
+
+    /**
+     * Internal remittance filter (operationsListRequest — OpenAPI 12.2.0).
+     * @var string $internalRemittance
+     */
+    public $internalRemittance;
+
+    /**
      * Constructor
      * @param string $parentAccountNumber
      * @param string $pagination
@@ -82,6 +102,8 @@ class ListOperationOptions
      * @param string $transactionId
      * @param string $paymentMethodKey
      * @param string $sellerAccountNumber
+     * @param string $operationType API 12.2.0+
+     * @param string $operationStatus API 12.2.0+
      */
     public function __construct(
         $parentAccountNumber = "",
@@ -95,7 +117,9 @@ class ListOperationOptions
         $currency = "",
         $transactionId = "",
         $paymentMethodKey = "",
-        $sellerAccountNumber = ""
+        $sellerAccountNumber = "",
+        $operationType = "",
+        $operationStatus = ""
     ) {
         $this->pagination = $pagination;
         $this->offset = $offset;
@@ -109,5 +133,7 @@ class ListOperationOptions
         $this->paymentMethodKey = $paymentMethodKey;
         $this->sellerAccountNumber = $sellerAccountNumber;
         $this->parentAccountNumber = $parentAccountNumber;
+        $this->operationType = $operationType;
+        $this->operationStatus = $operationStatus;
     }
 }

@@ -3,7 +3,9 @@ namespace CAPSPaymentApi;
 
 /**
  * Abstract class Enum for AccountType.
- * In /operations/list response, accountType is now a string from this list (not numeric id).
+ * In /operations/list response, accountType is a string from this list (not numeric id).
+ * API 12.2.0: correct spellings are "counter autorization" and "counter pre-autorization"
+ * (not "conter …").
  */
 abstract class EnumAccountType
 {

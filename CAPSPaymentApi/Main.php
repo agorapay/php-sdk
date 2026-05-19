@@ -67,6 +67,12 @@ class Main
     public $PaymentMethod;
 
     /**
+     * Virtual IBAN (vIban) — API 12.2.0+
+     * @var object $Viban \CAPSPaymentApi\ApiViban
+     */
+    public $Viban;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -81,5 +87,6 @@ class Main
         $this->Selfcare       = new ApiSelfcare($this);
         $this->Mandate        = new ApiMandate($this);
         $this->PaymentMethod  = new ApiPaymentMethod($this);
+        $this->Viban          = new ApiViban($this);
     }
 }

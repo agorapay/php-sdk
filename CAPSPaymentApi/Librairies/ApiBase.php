@@ -15,7 +15,13 @@ abstract class ApiBase
     {
         $jsonPayload = json_encode($obj, JSON_UNESCAPED_SLASHES);
         $jsonPayload = $this->filterDatas($jsonPayload, function ($value) {
-            return is_null($value) || $value === "";
+            if (is_null($value) || $value === "") {
+                return true;
+            }
+            if (is_string($value) && trim($value) === "") {
+                return true;
+            }
+            return false;
         });
         if ($method == "POST") {
              $jsonPayload = json_encode($jsonPayload, JSON_UNESCAPED_SLASHES);
@@ -92,20 +98,37 @@ abstract class ApiBase
             if ($method === "POST") {
                 $this->jsonFieldToString($postFields);
                 curl_setopt($curlHandler, CURLOPT_POST, 1);
-                if ($files !== null && is_array($files))
-                {
-                    $post = array();
-                    $post['json'] = $postFields;
-                    foreach ($files as $var => $content) {
-                        $post[$var] = new \CURLFile($content['filePath'], $content['fileType'], $content['fileName']);
+                if ($files !== null && is_array($files)) {
+                    $useBase64Multipart = !empty($files['_multipartBase64']);
+                    if ($useBase64Multipart) {
+                        unset($files['_multipartBase64']);
                     }
-                }
-                else
-								{
+                    if ($useBase64Multipart) {
+                        try {
+                            $built = $this->buildMultipartFormDataBase64($postFields, $files);
+                        } catch (\Exception $e) {
+                            curl_close($curlHandler);
+                            throw $e;
+                        }
+                        $post = $built['body'];
+                        $config[CURLOPT_HTTPHEADER][] =
+                            "Content-Type: multipart/form-data; boundary=" . $built['boundary'];
+                    } else {
+                        $post = array();
+                        $post['json'] = $postFields;
+                        foreach ($files as $var => $content) {
+                            $post[$var] = new \CURLFile(
+                                $content['filePath'],
+                                $content['fileType'],
+                                $content['fileName']
+                            );
+                        }
+                    }
+                } else {
                     $post = $postFields;
-										array_push($config[CURLOPT_HTTPHEADER], "Content-Type: application/json");
-								}
-            		curl_setopt_array($curlHandler, $config);
+                    array_push($config[CURLOPT_HTTPHEADER], "Content-Type: application/json");
+                }
+                curl_setopt_array($curlHandler, $config);
                 curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $post);
             }
 						else if ($method === "GET") {
@@ -128,6 +151,64 @@ abstract class ApiBase
             curl_close($curlHandler);
         } while ($again);
         return $response;
+    }
+
+    /**
+     * Build multipart/form-data body with JSON part and file part(s) using Base64 transfer encoding.
+     *
+     * @param string $jsonPayload JSON string for the "json" field
+     * @param array $fileParts map field name => array with keys filePath, fileType, fileName
+     * @return array with keys boundary (string), body (string)
+     */
+    private function buildMultipartFormDataBase64($jsonPayload, array $fileParts)
+    {
+        $boundary = 'CAPSPayment_' . str_replace('-', '', uniqid('', true));
+        $eol = "\r\n";
+        $body = '--' . $boundary . $eol;
+        $body .= 'Content-Disposition: form-data; name="json"' . $eol;
+        $body .= $eol;
+        $body .= $jsonPayload . $eol;
+        foreach ($fileParts as $fieldName => $content) {
+            if (!is_array($content)) {
+                continue;
+            }
+            if (
+                !isset($content['filePath']) ||
+                !isset($content['fileType']) ||
+                !isset($content['fileName'])
+            ) {
+                continue;
+            }
+            $binary = @file_get_contents($content['filePath']);
+            if ($binary === false) {
+                throw new \Exception('Unable to read file for upload: ' . $content['filePath']);
+            }
+            $b64 = base64_encode($binary);
+            $b64 = chunk_split($b64, 76, $eol);
+            $fileNameEsc = $this->escapeMultipartDispositionParameter($content['fileName']);
+            $fieldEsc = $this->escapeMultipartDispositionParameter((string) $fieldName);
+            $mime = str_replace(array("\r", "\n"), '', (string) $content['fileType']);
+            $body .= '--' . $boundary . $eol;
+            $body .= 'Content-Disposition: form-data; name="' . $fieldEsc . '"; filename="'
+                . $fileNameEsc . '"' . $eol;
+            $body .= 'Content-Type: ' . $mime . $eol;
+            $body .= 'Content-Transfer-Encoding: base64' . $eol;
+            $body .= $eol;
+            $body .= $b64;
+        }
+        $body .= '--' . $boundary . '--' . $eol;
+        return array('boundary' => $boundary, 'body' => $body);
+    }
+
+    /**
+     * Escape a value used inside quoted-string parameters of Content-Disposition.
+     *
+     * @param string $value
+     * @return string
+     */
+    private function escapeMultipartDispositionParameter($value)
+    {
+        return str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
     }
 
     /**

@@ -97,11 +97,12 @@ class ApiAccountHolder extends Librairies\ApiBase
               )
             );
             return $this->filterObject($endPoint, $uploadBody, 'POST', array(
-              'file' => array(
-                'fileName' => $uploadDocumentAccountHolderOptions->requirements[0]->fileName,
-                'fileType' => $uploadDocumentAccountHolderOptions->requirements[0]->fileMime,
-                'filePath' => $uploadDocumentAccountHolderOptions->requirements[0]->filePath
-               )
+                '_multipartBase64' => true,
+                'file' => array(
+                    'fileName' => $uploadDocumentAccountHolderOptions->requirements[0]->fileName,
+                    'fileType' => $uploadDocumentAccountHolderOptions->requirements[0]->fileMime,
+                    'filePath' => $uploadDocumentAccountHolderOptions->requirements[0]->filePath,
+                ),
             ));
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);

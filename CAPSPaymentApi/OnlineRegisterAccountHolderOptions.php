@@ -3,10 +3,30 @@
 namespace CAPSPaymentApi;
 
 /**
- * Description of OnlineRegisterAccountHolderOptions used for call api /accountHolder/onlineRegister
+ * Options for POST /accountHolder/onlineRegister — schema accountHolderOnlineRegisterRequest (OpenAPI 12.2.0).
+ *
+ * Required by the API (set all before call): productCode, externalReference, NAFCode, VATCode, socialReason,
+ * currency, country, legalForm, registrationNumber, masterAddress, turnover, regulatedSociety,
+ * physicalPersons, account, owner, introducerRiskLevel, usPerson.
+ * Optional: companyName, commercialAddress, sellerReference, introducerRiskScore, taxAddress, channel, …
  */
 class OnlineRegisterAccountHolderOptions
 {
+    /** @var string $productCode */
+    public $productCode;
+
+    /** @var string $externalReference */
+    public $externalReference;
+
+    /** @var string $NAFCode */
+    public $NAFCode;
+
+    /** @var string $VATCode */
+    public $VATCode;
+
+    /** @var string $sellerReference */
+    public $sellerReference;
+
     /**
      * Holder name (required).
      * @var string $socialReason
@@ -14,7 +34,7 @@ class OnlineRegisterAccountHolderOptions
     public $socialReason;
 
     /**
-     * The ISO country in 3 characters format (required).
+     * The ISO country in 2 characters format (required in 12.2.0 — countryCode2).
      * @var string $country
      */
     public $country;
@@ -68,7 +88,7 @@ class OnlineRegisterAccountHolderOptions
     public $currency;
 
     /**
-     * Account owner information
+     * Account owner information (required).
      * @var object $owner Instance of \CAPSPaymentApi\Owner
      */
     public $owner;
@@ -86,7 +106,35 @@ class OnlineRegisterAccountHolderOptions
     public $commercialAddress;
 
     /**
-     * Constructor
+     * Vigilance level (required) — digits, 1–4 chars.
+     * @var string $introducerRiskLevel
+     */
+    public $introducerRiskLevel;
+
+    /**
+     * US person for legal entity (required) — Y or N.
+     * @var string $usPerson
+     */
+    public $usPerson;
+
+    /**
+     * Scoring (optional) — schema field introducerRiskScore (OpenAPI 12.2.0).
+     * @var string $introducerRiskScore
+     */
+    public $introducerRiskScore;
+
+    /**
+     * @var object|null $taxAddress Set if required by your contract.
+     */
+    public $taxAddress;
+
+    /**
+     * @var string $channel e.g. EPI
+     */
+    public $channel;
+
+    /**
+     * Constructor — optional parameters default to empty; set required API fields via constructor or properties.
      */
     public function __construct(
         $socialReason,
@@ -101,20 +149,36 @@ class OnlineRegisterAccountHolderOptions
         $currency,
         $owner,
         $companyName = "",
-        $commercialAddress = ""
+        $commercialAddress = "",
+        $introducerRiskLevel = "",
+        $usPerson = "",
+        $introducerRiskScore = "",
+        $productCode = "",
+        $externalReference = "",
+        $NAFCode = "",
+        $VATCode = "",
+        $sellerReference = ""
     ) {
-        $this->socialReason       = $socialReason;
-        $this->country            = $country;
-        $this->legalForm          = $legalForm;
-        $this->registrationNumber = $registrationNumber;
-        $this->masterAddress      = $masterAddress;
-        $this->turnover           = $turnover;
-        $this->regulatedSociety   = $regulatedSociety;
-        $this->physicalPersons    = $physicalPersons;
-        $this->account            = $account;
-        $this->currency           = $currency;
-        $this->owner              = $owner;
-        $this->companyName        = $companyName;
-        $this->commercialAddress  = $commercialAddress;
+        $this->socialReason        = $socialReason;
+        $this->country             = $country;
+        $this->legalForm           = $legalForm;
+        $this->registrationNumber  = $registrationNumber;
+        $this->masterAddress       = $masterAddress;
+        $this->turnover            = $turnover;
+        $this->regulatedSociety    = $regulatedSociety;
+        $this->physicalPersons     = $physicalPersons;
+        $this->account             = $account;
+        $this->currency            = $currency;
+        $this->owner               = $owner;
+        $this->companyName         = $companyName;
+        $this->commercialAddress   = $commercialAddress;
+        $this->introducerRiskLevel = $introducerRiskLevel;
+        $this->usPerson            = $usPerson;
+        $this->introducerRiskScore = $introducerRiskScore;
+        $this->productCode         = $productCode;
+        $this->externalReference   = $externalReference;
+        $this->NAFCode             = $NAFCode;
+        $this->VATCode             = $VATCode;
+        $this->sellerReference     = $sellerReference;
     }
 }

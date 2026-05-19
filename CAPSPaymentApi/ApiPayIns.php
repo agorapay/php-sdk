@@ -3,9 +3,9 @@
 namespace CAPSPaymentApi;
 
 /**
- * Class to management CAPSPaymentApi for ApiPayins
+ * Class to management CAPSPaymentApi for ApiPayIns
  */
-class ApiPayins extends Librairies\ApiBase
+class ApiPayIns extends Librairies\ApiBase
 {
     public $_root;
 
@@ -175,7 +175,7 @@ class ApiPayins extends Librairies\ApiBase
      * Submit an Order/ Get an Authent Code
      * When your shopper is ready to pay, submit your order/payment by this request and get an Authent Code.
      * Then save the orderId and open an iframe for the shopper with the authentCode.
-     * Note: the "details" object for this API no longer accepts "iban". Use \CAPSPaymentApi\DetailsPaymentIframe or iban is stripped from the request.
+     * Note: `details.iban` is optional; it is omitted from the JSON when empty (same filtering as other payin calls). You may use \CAPSPaymentApi\DetailsPaymentIframe when you do not need IBAN on `details`.
      * @param object $paymentIframePayinsOptions Instance of class \CAPSPaymentApi\PaymentIframePayinsOptions
      * @return object Response data
      */
@@ -183,8 +183,7 @@ class ApiPayins extends Librairies\ApiBase
     {
         try {
             $endPoint = "/payin/paymentIframe";
-            $options = $this->stripIbanFromDetails($paymentIframePayinsOptions);
-            return $this->filterObject($endPoint, $options);
+            return $this->filterObject($endPoint, $paymentIframePayinsOptions);
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);
         }
@@ -194,7 +193,7 @@ class ApiPayins extends Librairies\ApiBase
      * Call api /payin/paymentIframeSecure
      *
      * Submit an Order/ Get an Authent Code for secure payment (iframe).
-     * Note: the "details" object for this API no longer accepts "iban". Use \CAPSPaymentApi\DetailsPaymentIframe or iban is stripped from the request.
+     * Note: `details.iban` is optional; it is omitted from the JSON when empty (same filtering as other payin calls).
      * @param object $paymentIframePayinsOptions Instance of class \CAPSPaymentApi\PaymentIframePayinsOptions
      * @return object Response data
      */
@@ -202,27 +201,10 @@ class ApiPayins extends Librairies\ApiBase
     {
         try {
             $endPoint = "/payin/paymentIframeSecure";
-            $options = $this->stripIbanFromDetails($paymentIframePayinsOptions);
-            return $this->filterObject($endPoint, $options);
+            return $this->filterObject($endPoint, $paymentIframePayinsOptions);
         } catch (\Exception $exception) {
             return $this->getMsgException($exception);
         }
-    }
-
-    /**
-     * Strip iban from details for paymentIframe/paymentIframeSecure (details no longer accepts iban).
-     * @param object $options
-     * @return object Clone of options with details.iban removed if present
-     */
-    private function stripIbanFromDetails($options)
-    {
-        $opts = clone $options;
-        if (isset($opts->details) && is_object($opts->details) && property_exists($opts->details, 'iban')) {
-            $d = clone $opts->details;
-            unset($d->iban);
-            $opts->details = $d;
-        }
-        return $opts;
     }
 
     /**

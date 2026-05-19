@@ -45,6 +45,12 @@ class RegisterPerson
     public $roles;
 
     /**
+     * Optional scoring field for physicalPersons (extension; not in OpenAPI 12.2.0 onlineRegisterPersonRequest).
+     * @var string $scoring
+     */
+    public $scoring;
+
+    /**
      * Constructor
      * @param string $gender
      * @param string $firstname
@@ -53,6 +59,7 @@ class RegisterPerson
      * @param string $phoneNumber
      * @param array  $roles
      * @param string $birthDate
+     * @param string $scoring API 12.2.0+ (onlineRegister physicalPersons)
      */
     public function __construct(
         $firstName,
@@ -61,7 +68,8 @@ class RegisterPerson
         $roles,
         $email = "",
         $phoneNumber = "",
-        $birthDate = ""
+        $birthDate = "",
+        $scoring = ""
     ) {
         $this->gender = $gender;
         $this->firstName = $firstName;
@@ -70,5 +78,6 @@ class RegisterPerson
         $this->phoneNumber = $phoneNumber;
         $this->roles = $roles;
         $this->birthDate = $birthDate;
+        $this->scoring = $scoring;
     }
 }
